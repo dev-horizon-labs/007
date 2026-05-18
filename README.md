@@ -5,6 +5,9 @@ Warsztat hands-on — zbuduj asystenta, który odpowiada na pytania po polsku, o
 ## Jak zacząć
 
 Środowisko jest gotowe — Python, baza danych i klucz API są skonfigurowane.
+**UI otwiera się automatycznie** w przeglądarce (port 7860). Tam widzisz swój progres i testujesz rozwiązania.
+
+Zacznij od terminala:
 
 ```bash
 python cp1.py
@@ -30,20 +33,21 @@ Model zwraca ustrukturyzowany raport (Pydantic) zamiast tekstu do parsowania.
 2. **Przeczytaj** — sekcja 2 to mini przykład Structured Output (model z jednym polem `title`).
 3. **Napisz** — sekcja 3: rozbuduj do pełnego `RentalReport` z tabelą danych.
 
-### CP3: Pipeline + Gradio UI (`cp3.py`)
+### CP3: Pipeline (`cp3.py`)
 
-Łączysz CP1 i CP2 w pipeline — model odpytuje bazę, formatuje raport, Gradio wyświetla.
+Łączysz CP1 i CP2 w pipeline — model odpytuje bazę, formatuje raport.
 
 1. **Skopiuj** — wklej swoje rozwiązania z CP1 i CP2.
 2. **Połącz** — napisz `fc_query()` i `so_format()`, potem `pipeline()`.
-3. **Uruchom UI** — `python cp3.py --ui` i otwórz w przeglądarce.
+3. **Sprawdź** — wynik zobaczysz w UI (tab "CP3: Pipeline") lub w terminalu.
 
 ## Struktura repo
 
 ```
+├── app.py              ← UI (auto-start, nie zmieniaj)
 ├── cp1.py              ← Checkpoint 1: Function Calling
 ├── cp2.py              ← Checkpoint 2: Structured Output
-├── cp3.py              ← Checkpoint 3: Pipeline + Gradio
+├── cp3.py              ← Checkpoint 3: Pipeline
 ├── lib/
 │   └── db.py           ← Połączenie z bazą, walidacja SQL, schema (nie zmieniaj)
 ├── data/
