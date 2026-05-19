@@ -112,7 +112,7 @@ def cp3_run(question):
 
 # ── UI ──
 
-with gr.Blocks(title="dev_horizon labs", theme=gr.themes.Soft()) as app:
+with gr.Blocks(title="dev_horizon labs") as app:
     gr.Markdown("# dev_horizon labs — Text-to-SQL")
     gr.Markdown("Wyniki z checkpointów. Edytuj `cp1.py` / `cp2.py` / `cp3.py`, zapisz, kliknij przycisk.")
 
@@ -165,4 +165,4 @@ with gr.Blocks(title="dev_horizon labs", theme=gr.themes.Soft()) as app:
         )
 
 if __name__ == "__main__":
-    app.launch(server_name="0.0.0.0", server_port=7860)
+    app.launch(server_name="0.0.0.0", server_port=7860, theme=gr.themes.Soft())
