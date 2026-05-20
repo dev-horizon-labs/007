@@ -1,12 +1,13 @@
 """Tworzy bazę wypozyczalnia.db z schematem SQLite i realistycznymi danymi."""
 
+import os
 import random
 import sqlite3
 from datetime import datetime, timedelta
 
 random.seed(42)
 
-DB_PATH = "data/wypozyczalnia.db"
+DB_PATH = os.path.join(os.path.dirname(__file__), "wypozyczalnia.db")
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS Oddzialy (
@@ -208,9 +209,6 @@ def rand_license() -> str:
 
 
 def main():
-    import os
-    os.makedirs("data", exist_ok=True)
-
     if os.path.exists(DB_PATH):
         os.remove(DB_PATH)
 
