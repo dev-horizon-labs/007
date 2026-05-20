@@ -89,25 +89,70 @@ def mini_example(question: str) -> str:
 # ════════════════════════════════════════════════════════════════════════
 # SEKCJA 2: TWOJE ZADANIE
 #
-# Zbuduj narzędzie execute_sql, które:
-# - Przyjmuje parametr sql_query (string)
-# - Wykonuje zapytanie SELECT na bazie (użyj validate_sql + execute_query z lib/db.py)
-# - Zwraca wyniki jako JSON
-#
-# Podpowiedzi:
-# - Definicja narzędzia: wzoruj się na GET_CAR_COUNT_TOOL, dodaj parametr sql_query
-# - System prompt: dodaj SCHEMA_DDL żeby model wiedział jakie tabele są w bazie
-# - Tool loop: model może chcieć wywołać narzędzie wielokrotnie — obsłuż to w pętli while
+# Uzupełnij dwa TODO poniżej. Reszta kodu jest gotowa.
+# Wzoruj się na mini_example() wyżej.
 # ════════════════════════════════════════════════════════════════════════
 
 
-# TODO: Zdefiniuj EXECUTE_SQL_TOOL (dict z opisem narzędzia)
-# EXECUTE_SQL_TOOL = ...
+EXECUTE_SQL_TOOL = {
+    "type": "function",
+    "function": {
+        "name": "execute_sql",
+        "description": "Wykonuje zapytanie SELECT na bazie wypożyczalni samochodów",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                # TODO 1: dodaj parametr "sql_query"
+                # Wzór: "sql_query": {"type": "string", "description": "..."}
+            },
+            "required": ["sql_query"],
+        },
+    },
+}
 
 
-# TODO: Napisz funkcję good_ask(question: str) -> str
-# def good_ask(question: str) -> str:
-#     ...
+def good_ask(question: str) -> str:
+    messages = [
+        {
+            "role": "system",
+            "content": f"""Jesteś asystentem wypożyczalni samochodów. Odpowiadaj po polsku.
+Schemat bazy danych:
+
+{SCHEMA_DDL}""",
+        },
+        {"role": "user", "content": question},
+    ]
+
+    response = client.chat.completions.create(
+        model=MODEL,
+        messages=messages,
+        tools=[EXECUTE_SQL_TOOL],
+    )
+    message = response.choices[0].message
+
+    while message.tool_calls:
+        tool_call = message.tool_calls[0]
+        args = json.loads(tool_call.function.arguments)
+        sql = args["sql_query"]
+
+        # TODO 2: wykonaj zapytanie i zapisz wynik jako string w 'result'
+        # Użyj: validate_sql(sql), execute_query(sql), json.dumps(...)
+        result = ...
+
+        messages.append(message)
+        messages.append({
+            "role": "tool",
+            "tool_call_id": tool_call.id,
+            "content": result,
+        })
+
+        response = client.chat.completions.create(
+            model=MODEL,
+            messages=messages,
+        )
+        message = response.choices[0].message
+
+    return message.content
 
 
 # ════════════════════════════════════════════════════════════════════════
