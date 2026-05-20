@@ -2,14 +2,6 @@
   "name": "dev_horizon labs — Text-to-SQL",
   "image": "mcr.microsoft.com/devcontainers/python:3.12",
   "postCreateCommand": "pip install -r requirements.txt",
-  "postStartCommand": "nohup python app.py > /tmp/gradio.log 2>&1 &",
-  "forwardPorts": [7860],
-  "portsAttributes": {
-    "7860": {
-      "label": "dev_horizon labs UI",
-      "onAutoForward": "openBrowser"
-    }
-  },
   "customizations": {
     "vscode": {
       "extensions": [
