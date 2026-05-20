@@ -2,11 +2,10 @@
 CP2: Structured Output
 ======================
 
-Ten plik ma TRZY sekcje:
+Ten plik ma DWIE sekcje:
 
-  1. ANTYWZORZEC  — json.loads() na tekście LLM. Uruchom KILKA RAZY.
-  2. MINI PRZYKŁAD — Structured Output z jednym polem (TinyReport).
-  3. TWOJE ZADANIE — rozbuduj do pełnego RentalReport.
+  1. MINI PRZYKŁAD — Structured Output z jednym polem (TinyReport).
+  2. TWOJE ZADANIE — rozbuduj do pełnego RentalReport.
 
 Uruchom: python cp2.py
 """
@@ -34,69 +33,7 @@ TEST_DATA = execute_query(TEST_SQL)
 
 
 # ════════════════════════════════════════════════════════════════════════
-# SEKCJA 1: ANTYWZORZEC — json.loads() na tekście LLM
-#
-# Dwa warianty — oba próbują wyciągnąć JSON z tekstu modelu.
-# Uruchom KILKA RAZY. Czy za każdym razem działa?
-#
-# v1: luźna instrukcja — model owija JSON w markdown lub dodaje tekst
-# v2: sprzeczne instrukcje — model wyjaśnia I zwraca JSON naraz
-# ════════════════════════════════════════════════════════════════════════
-
-
-def bad_report_v1(question: str, raw_data: list[dict]) -> dict:
-    """ANTYWZORZEC v1: luźna instrukcja — model owija JSON w markdown lub dodaje tekst."""
-    response = client.chat.completions.create(
-        model=MODEL,
-        messages=[
-            {
-                "role": "system",
-                "content": """Odpowiedz na pytanie o wypożyczalnię samochodów.
-Sformatuj odpowiedź jako JSON z polami: title, main_value, rows, summary.""",
-            },
-            {
-                "role": "user",
-                "content": f"Pytanie: {question}\n\nDane:\n{json.dumps(raw_data, ensure_ascii=False)}",
-            },
-        ],
-    )
-
-    text = response.choices[0].message.content
-
-    # Odkomentuj żeby zobaczyć co model naprawdę zwraca:
-    # print(f">>> Surowy tekst z modelu:\n{text}\n<<<")
-
-    return json.loads(text)
-
-
-def bad_report_v2(question: str, raw_data: list[dict]) -> dict:
-    """ANTYWZORZEC v2: sprzeczne instrukcje — model wyjaśnia I zwraca JSON."""
-    response = client.chat.completions.create(
-        model=MODEL,
-        messages=[
-            {
-                "role": "system",
-                "content": """Jesteś analitykiem wypożyczalni samochodów.
-Odpowiedz na pytanie użytkownika. Wyjaśnij swoje wnioski i podaj dane.
-Dane podaj w formacie JSON: {title, main_value, rows: [{label, value, detail}], summary}""",
-            },
-            {
-                "role": "user",
-                "content": f"Pytanie: {question}\n\nDane:\n{json.dumps(raw_data, ensure_ascii=False)}",
-            },
-        ],
-    )
-
-    text = response.choices[0].message.content
-
-    # Odkomentuj żeby zobaczyć co model naprawdę zwraca:
-    # print(f">>> Surowy tekst z modelu:\n{text}\n<<<")
-
-    return json.loads(text)
-
-
-# ════════════════════════════════════════════════════════════════════════
-# SEKCJA 2: MINI PRZYKŁAD — Structured Output
+# SEKCJA 1: MINI PRZYKŁAD — Structured Output
 #
 # Najprostszy model Pydantic: jedno pole. API gwarantuje format.
 # ════════════════════════════════════════════════════════════════════════
@@ -126,7 +63,7 @@ def mini_example(question: str, raw_data: list[dict]) -> TinyReport:
 
 
 # ════════════════════════════════════════════════════════════════════════
-# SEKCJA 3: TWOJE ZADANIE
+# SEKCJA 2: TWOJE ZADANIE
 #
 # Rozbuduj TinyReport do pełnego modelu raportu:
 #
@@ -170,36 +107,15 @@ def mini_example(question: str, raw_data: list[dict]) -> TinyReport:
 # ════════════════════════════════════════════════════════════════════════
 
 if __name__ == "__main__":
-    for name, fn in [("v1 (luźna instrukcja)", bad_report_v1), ("v2 (sprzeczne instrukcje)", bad_report_v2)]:
-        print("=" * 60)
-        print(f"SEKCJA 1: ANTYWZORZEC {name}")
-        print("Uruchom kilka razy — czy zawsze działa?")
-        print("=" * 60)
-        try:
-            report = fn(TEST_QUESTION, TEST_DATA)
-            print(f"Tytuł:  {report['title']}")
-            print(f"Główna: {report['main_value']}")
-            for row in report["rows"]:
-                print(f"  {row['label']}: {row['value']} ({row.get('detail', '')})")
-            print(f"Summary: {report['summary']}")
-        except json.JSONDecodeError as e:
-            print(f"BŁĄD PARSOWANIA: {e}")
-            print("Model nie zwrócił czystego JSON-a.")
-            print("Odkomentuj print() w bad_report_*() żeby zobaczyć co zwrócił.")
-        except KeyError as e:
-            print(f"BRAK POLA: {e}")
-            print("Model zwrócił JSON, ale z innymi nazwami pól.")
-        print()
-
-    print("\n" + "=" * 60)
-    print("SEKCJA 2: MINI PRZYKŁAD — Structured Output")
+    print("=" * 60)
+    print("SEKCJA 1: MINI PRZYKŁAD — Structured Output")
     print("=" * 60)
     tiny = mini_example(TEST_QUESTION, TEST_DATA)
     print(f"Tytuł: {tiny.title}")
     print(f"Typ:   {type(tiny).__name__} (Pythonowy obiekt, nie tekst!)")
 
     # print("\n" + "=" * 60)
-    # print("SEKCJA 3: TWOJE ROZWIĄZANIE")
+    # print("SEKCJA 2: TWOJE ROZWIĄZANIE")
     # print("=" * 60)
     # report = good_report(TEST_QUESTION, TEST_DATA, TEST_SQL)
     # print(f"Tytuł:  {report.title}")

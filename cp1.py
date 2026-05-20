@@ -2,11 +2,10 @@
 CP1: Function Calling
 =====================
 
-Ten plik ma TRZY sekcje:
+Ten plik ma DWIE sekcje:
 
-  1. ANTYWZORZEC  — prompt stuffing (dane w prompcie). Uruchom i przetestuj.
-  2. MINI PRZYKŁAD — najprostsze Function Calling (narzędzie bez parametrów).
-  3. TWOJE ZADANIE — zbuduj execute_sql z parametrem sql_query.
+  1. MINI PRZYKŁAD — najprostsze Function Calling (narzędzie bez parametrów).
+  2. TWOJE ZADANIE — zbuduj execute_sql z parametrem sql_query.
 
 Uruchom: python cp1.py
 """
@@ -18,58 +17,7 @@ from lib.db import DB_PATH, SCHEMA_DDL, client, MODEL, execute_query, validate_s
 
 
 # ════════════════════════════════════════════════════════════════════════
-# SEKCJA 1: ANTYWZORZEC — prompt stuffing
-#
-# Kod poniżej wrzuca WSZYSTKIE dane z bazy do promptu.
-# Uruchom i sprawdź odpowiedzi — czy są poprawne?
-# ════════════════════════════════════════════════════════════════════════
-
-
-def get_all_data() -> str:
-    """Pobiera WSZYSTKIE dane z bazy i zwraca jako tekst."""
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    tables = [
-        "Oddzialy", "KategorieSamochodow", "Samochody",
-        "Klienci", "Pracownicy", "Wypozyczenia", "Platnosci",
-    ]
-    dump = ""
-    for table in tables:
-        rows = conn.execute(f"SELECT * FROM {table}").fetchall()
-        dump += f"\n=== {table} ({len(rows)} wierszy) ===\n"
-        for row in rows:
-            dump += str(dict(row)) + "\n"
-    conn.close()
-    return dump
-
-
-def bad_ask(question: str) -> str:
-    """ANTYWZORZEC: wrzuca wszystkie dane do promptu."""
-    all_data = get_all_data()
-
-    # Odkomentuj żeby zobaczyć ile tekstu leci do modelu:
-    # print(f">>> Rozmiar danych w prompcie: {len(all_data)} znaków")
-
-    response = client.chat.completions.create(
-        model=MODEL,
-        messages=[
-            {
-                "role": "system",
-                "content": f"""Jesteś asystentem wypożyczalni samochodów.
-Oto WSZYSTKIE dane z naszej bazy:
-
-{all_data}
-
-Odpowiedz na pytanie użytkownika. Odpowiadaj po polsku, krótko i na temat.""",
-            },
-            {"role": "user", "content": question},
-        ],
-    )
-    return response.choices[0].message.content
-
-
-# ════════════════════════════════════════════════════════════════════════
-# SEKCJA 2: MINI PRZYKŁAD — Function Calling
+# SEKCJA 1: MINI PRZYKŁAD — Function Calling
 #
 # Najprostsze możliwe narzędzie: zero parametrów, jeden wynik.
 # Przeczytaj kod, uruchom, zrozum jak działa.
@@ -139,7 +87,7 @@ def mini_example(question: str) -> str:
 
 
 # ════════════════════════════════════════════════════════════════════════
-# SEKCJA 3: TWOJE ZADANIE
+# SEKCJA 2: TWOJE ZADANIE
 #
 # Zbuduj narzędzie execute_sql, które:
 # - Przyjmuje parametr sql_query (string)
@@ -167,28 +115,20 @@ def mini_example(question: str) -> str:
 # ════════════════════════════════════════════════════════════════════════
 
 if __name__ == "__main__":
-    questions = [
-        "Ile samochodów jest dostępnych w Płocku?",
-        "Który klient wypożyczył najwięcej samochodów?",
-        "Jaka jest średnia stawka dzienna w kategorii SUV?",
-    ]
-
     print("=" * 60)
-    print("SEKCJA 1: ANTYWZORZEC — prompt stuffing")
-    print("=" * 60)
-    for q in questions:
-        print(f"\nQ: {q}")
-        print(f"A: {bad_ask(q)}")
-
-    print("\n" + "=" * 60)
-    print("SEKCJA 2: MINI PRZYKŁAD — Function Calling")
+    print("SEKCJA 1: MINI PRZYKŁAD — Function Calling")
     print("=" * 60)
     print(f"\nQ: Ile samochodów macie w ofercie?")
     print(f"A: {mini_example('Ile samochodów macie w ofercie?')}")
 
     # print("\n" + "=" * 60)
-    # print("SEKCJA 3: TWOJE ROZWIĄZANIE")
+    # print("SEKCJA 2: TWOJE ROZWIĄZANIE")
     # print("=" * 60)
+    # questions = [
+    #     "Ile samochodów jest dostępnych w Płocku?",
+    #     "Który klient wypożyczył najwięcej samochodów?",
+    #     "Jaka jest średnia stawka dzienna w kategorii SUV?",
+    # ]
     # for q in questions:
     #     print(f"\nQ: {q}")
     #     print(f"A: {good_ask(q)}")

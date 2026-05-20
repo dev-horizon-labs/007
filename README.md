@@ -9,7 +9,7 @@ Warsztat hands-on — zbuduj asystenta, który odpowiada na pytania po polsku, o
 Zacznij od terminala:
 
 ```bash
-python cp1.py
+python cp1bad.py
 ```
 
 ## Checkpointy
@@ -20,17 +20,17 @@ Każdy plik to jeden checkpoint. Pracujesz w nim — czytasz kod, uruchamiasz, i
 
 Model odpytuje bazę danych narzędziem zamiast zgadywać z danych w prompcie.
 
-1. **Uruchom** — sekcja 1 wrzuca wszystkie dane do promptu. Sprawdź odpowiedzi.
-2. **Przeczytaj** — sekcja 2 to mini przykład Function Calling (narzędzie bez parametrów).
-3. **Napisz** — sekcja 3: zbuduj narzędzie `execute_sql(sql_query)` używając tego samego patternu.
+1. **Antywzorzec** — uruchom `python cp1bad.py`. Wszystkie dane lecą do promptu.
+2. **Przeczytaj** — `cp1.py` sekcja 1 to mini przykład Function Calling (narzędzie bez parametrów).
+3. **Napisz** — sekcja 2 w `cp1.py`: zbuduj narzędzie `execute_sql(sql_query)` używając tego samego patternu.
 
 ### CP2: Structured Output (`cp2.py`)
 
 Model zwraca ustrukturyzowany raport (Pydantic) zamiast tekstu do parsowania.
 
-1. **Uruchom kilka razy** — sekcja 1 parsuje tekst modelu przez `json.loads()`. Czy zawsze działa?
-2. **Przeczytaj** — sekcja 2 to mini przykład Structured Output (model z jednym polem `title`).
-3. **Napisz** — sekcja 3: rozbuduj do pełnego `RentalReport` z tabelą danych.
+1. **Antywzorce** — uruchom `python cp2bad1.py` i `python cp2bad2.py` kilka razy. Czy `json.loads()` zawsze działa?
+2. **Przeczytaj** — `cp2.py` sekcja 1 to mini przykład Structured Output (model z jednym polem `title`).
+3. **Napisz** — sekcja 2 w `cp2.py`: rozbuduj do pełnego `RentalReport` z tabelą danych.
 
 ### CP3: Pipeline (`cp3.py`)
 
@@ -43,7 +43,10 @@ Model zwraca ustrukturyzowany raport (Pydantic) zamiast tekstu do parsowania.
 ## Struktura repo
 
 ```
+├── cp1bad.py           ← Antywzorzec CP1: prompt stuffing
 ├── cp1.py              ← Checkpoint 1: Function Calling
+├── cp2bad1.py          ← Antywzorzec CP2: luźna instrukcja JSON
+├── cp2bad2.py          ← Antywzorzec CP2: sprzeczne instrukcje
 ├── cp2.py              ← Checkpoint 2: Structured Output
 ├── cp3.py              ← Checkpoint 3: Pipeline (FC + SO → raport .md)
 ├── lib/
