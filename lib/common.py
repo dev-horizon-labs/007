@@ -1,5 +1,15 @@
 MODEL = "gpt-4o-mini"
 
+AVAILABLE_MODELS = [
+    "gpt-4o-mini",
+    "gpt-4.1-mini",
+    "gpt-4.1-nano",
+    "gpt-5-mini",
+    "gpt-5-nano",
+    "gpt-5.4-mini",
+    "gpt-5.4-nano",
+]
+
 SCHEMA_DDL = """
 Oddzialy(id, nazwa, miasto, adres, telefon, aktywny)
 KategorieSamochodow(id, nazwa, opis, stawka_dzienna)
