@@ -102,8 +102,11 @@ EXECUTE_SQL_TOOL = {
         "parameters": {
             "type": "object",
             "properties": {
-                # TODO 1: dodaj parametr "sql_query"
-                # Wzór: "sql_query": {"type": "string", "description": "..."}
+                # TODO 1: dodaj parametr "sql_query". Określ typ parametru i jego opis.
+                # Wzór: "nazwa_parametru": {"type": "typ_parametru", "description": "opis_parametru"}
+                # Przykład: "city": {"type": "string", "description": "Nazwa miasta"}
+                # typ_parametru: Typy JSON Schema: https://json-schema.org/understanding-json-schema/reference/type
+                # Więcej o function calling: https://platform.openai.com/docs/guides/function-calling
             },
             "required": ["sql_query"],
         },
@@ -136,7 +139,15 @@ Schemat bazy danych:
         sql = args["sql_query"]
 
         # TODO 2: wykonaj zapytanie i zapisz wynik jako string w 'result'
-        # Użyj: validate_sql(sql), execute_query(sql), json.dumps(...)
+        # Kroki:
+        #   1. validate_sql(sql) → True/False — sprawdza czy zapytanie jest bezpieczne (tylko SELECT)
+        #   2. execute_query(sql) → list[dict] — wykonuje SQL i zwraca wiersze jako listę słowników
+        #      np. execute_query("SELECT marka, model FROM Samochody LIMIT 2")
+        #      → [{"marka": "Toyota", "model": "Corolla"}, {"marka": "BMW", "model": "X5"}]
+        #   3. json.dumps(wynik) → str — zamienia list[dict] na string JSON
+        #      (pole "content" w wiadomości tool MUSI być stringiem, nie listą)
+        # Jeśli walidacja się nie powiedzie, zwróć komunikat o błędzie jako string: json.dumps({"error": "..."})
+        # HINT: potrzebny jest if :)
         result = ...
 
         messages.append(message)
@@ -166,6 +177,7 @@ if __name__ == "__main__":
     print(f"\nQ: Ile samochodów macie w ofercie?")
     print(f"A: {mini_example('Ile samochodów macie w ofercie?')}")
 
+    # ── Po uzupełnieniu TODO 1 i TODO 2 odkomentuj poniższy blok ──
     # print("\n" + "=" * 60)
     # print("SEKCJA 2: TWOJE ROZWIĄZANIE")
     # print("=" * 60)
