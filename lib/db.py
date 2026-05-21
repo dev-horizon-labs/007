@@ -76,13 +76,8 @@ class _Completions:
         _log_api_call(kwargs.get("messages", []), resp)
         return resp
 
-
-class _BetaCompletions:
-    def __init__(self, real):
-        self._real = real
-
     def parse(self, **kwargs):
-        resp = self._real.beta.chat.completions.parse(**kwargs)
+        resp = self._real.chat.completions.parse(**kwargs)
         _log_api_call(kwargs.get("messages", []), resp)
         return resp
 
@@ -92,21 +87,10 @@ class _Chat:
         self.completions = _Completions(real)
 
 
-class _BetaChat:
-    def __init__(self, real):
-        self.completions = _BetaCompletions(real)
-
-
-class _Beta:
-    def __init__(self, real):
-        self.chat = _BetaChat(real)
-
-
 class _LoggingClient:
     def __init__(self, real):
         self._real = real
         self.chat = _Chat(real)
-        self.beta = _Beta(real)
 
     def __getattr__(self, name):
         return getattr(self._real, name)

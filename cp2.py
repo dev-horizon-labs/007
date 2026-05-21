@@ -14,7 +14,7 @@ import json
 
 from pydantic import BaseModel, Field
 
-from lib.common import MODEL, SCHEMA_DDL
+from lib.common import MODEL
 from lib.db import client, execute_query
 
 
@@ -46,7 +46,10 @@ class TinyReport(BaseModel):
 
 def mini_example(question: str, raw_data: list[dict]) -> TinyReport:
     """MINI PRZYKŁAD: Structured Output z jednym polem."""
-    result = client.beta.chat.completions.parse(
+    # .parse() to wrapper SDK — automatycznie konwertuje response na obiekt Pydantic (.parsed).
+    # Bez .parse(): client.chat.completions.create() + json.loads() + Model(**data)
+    # Docs: https://developers.openai.com/api/docs/guides/structured-outputs
+    result = client.chat.completions.parse(
         model=MODEL,
         messages=[
             {
