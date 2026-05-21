@@ -72,9 +72,9 @@ def save_report(report, path: str) -> None:
 #    {"text_answer": str, "report": RentalReport}
 #
 # Podpowiedzi:
-# - Faza FC to ten sam pattern co good_ask() z CP1, ale zamiast zwracać
+# - Faza FC to ten sam pattern co ask() z CP1, ale zamiast zwracać
 #   tekst — zbierasz sql_used i raw_data
-# - Faza SO to ten sam pattern co good_report() z CP2
+# - Faza SO to ten sam pattern co full_report() z CP2
 # - validate_sql i execute_query są zaimportowane z lib/db
 # ════════════════════════════════════════════════════════════════════════
 

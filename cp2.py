@@ -83,7 +83,7 @@ def mini_example(question: str, raw_data: list[dict]) -> TinyReport:
 #    - summary (str) — 1-2 zdania podsumowania
 #    - sql_used (str) — zapytanie SQL użyte do pobrania danych
 #
-# 3. Napisz funkcję good_report() która używa response_format=RentalReport
+# 3. Napisz funkcję full_report() która używa response_format=RentalReport
 #
 # Podpowiedzi:
 # - Użyj Field(description=...) żeby powiedzieć modelowi co wpisać w każde pole
@@ -101,8 +101,8 @@ def mini_example(question: str, raw_data: list[dict]) -> TinyReport:
 #     ...
 
 
-# TODO: Napisz funkcję good_report(question, raw_data, sql_used) -> RentalReport
-# def good_report(question: str, raw_data: list[dict], sql_used: str) -> RentalReport:
+# TODO: Napisz funkcję full_report(question, raw_data, sql_used) -> RentalReport
+# def full_report(question: str, raw_data: list[dict], sql_used: str) -> RentalReport:
 #     ...
 
 
@@ -121,7 +121,7 @@ if __name__ == "__main__":
     # print("\n" + "=" * 60)
     # print("SEKCJA 2: TWOJE ROZWIĄZANIE")
     # print("=" * 60)
-    # report = good_report(TEST_QUESTION, TEST_DATA, TEST_SQL)
+    # report = full_report(TEST_QUESTION, TEST_DATA, TEST_SQL)
     # print(f"Tytuł:  {report.title}")
     # print(f"Główna: {report.main_value}")
     # for row in report.rows:

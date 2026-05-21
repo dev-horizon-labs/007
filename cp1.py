@@ -115,7 +115,7 @@ EXECUTE_SQL_TOOL = {
 }
 
 
-def good_ask(question: str) -> str:
+def ask(question: str) -> str:
     total_tokens = 0  # sumujemy prompt_tokens ze wszystkich wywołań API
     messages = [
         {
@@ -195,4 +195,4 @@ if __name__ == "__main__":
     # ]
     # for q in questions:
     #     print(f"\nQ: {q}")
-    #     print(f"A: {good_ask(q)}")
+    #     print(f"A: {ask(q)}")
