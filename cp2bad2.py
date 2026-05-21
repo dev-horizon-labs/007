@@ -44,29 +44,18 @@ Dane podaj w formacie JSON: {title, main_value, rows: [{label, value, detail}], 
     )
 
     text = response.choices[0].message.content
-
-    # Odkomentuj żeby zobaczyć co model naprawdę zwraca:
-    # print(f">>> Surowy tekst z modelu:\n{text}\n<<<")
-
     return json.loads(text)
 
 
 if __name__ == "__main__":
     print("=" * 60)
     print("ANTYWZORZEC: Sprzeczne instrukcje")
-    print("Uruchom kilka razy — czy zawsze działa?")
+    print("Prompt mówi: 'wyjaśnij wnioski' + 'podaj JSON' — co wygra?")
+    print("Sprawdź logi — czy model zwrócił TYLKO JSON?")
     print("=" * 60)
-    try:
-        report = bad_report_v2(TEST_QUESTION, TEST_DATA)
-        print(f"Tytuł:  {report['title']}")
-        print(f"Główna: {report['main_value']}")
-        for row in report["rows"]:
-            print(f"  {row['label']}: {row['value']} ({row.get('detail', '')})")
-        print(f"Summary: {report['summary']}")
-    except json.JSONDecodeError as e:
-        print(f"BŁĄD PARSOWANIA: {e}")
-        print("Model nie zwrócił czystego JSON-a.")
-        print("Odkomentuj print() w bad_report_v2() żeby zobaczyć co zwrócił.")
-    except KeyError as e:
-        print(f"BRAK POLA: {e}")
-        print("Model zwrócił JSON, ale z innymi nazwami pól.")
+    report = bad_report_v2(TEST_QUESTION, TEST_DATA)
+    print(f"Tytuł:  {report['title']}")
+    print(f"Główna: {report['main_value']}")
+    for row in report["rows"]:
+        print(f"  {row['label']}: {row['value']} ({row.get('detail', '')})")
+    print(f"Summary: {report['summary']}")

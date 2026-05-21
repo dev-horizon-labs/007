@@ -43,29 +43,20 @@ Sformatuj odpowiedź jako JSON z polami: title, main_value, rows, summary.""",
     )
 
     text = response.choices[0].message.content
-
-    # Odkomentuj żeby zobaczyć co model naprawdę zwraca:
-    # print(f">>> Surowy tekst z modelu:\n{text}\n<<<")
-
+    if text.startswith("```"):
+        text = text.split("\n", 1)[1].rsplit("```", 1)[0]
     return json.loads(text)
 
 
 if __name__ == "__main__":
     print("=" * 60)
     print("ANTYWZORZEC: Luźna instrukcja JSON")
-    print("Uruchom kilka razy — czy zawsze działa?")
+    print("Uruchom kilka razy — czy nazwy pól są zawsze takie same?")
+    print("Sprawdź logi — jak model interpretuje 'sformatuj jako JSON'?")
     print("=" * 60)
-    try:
-        report = bad_report_v1(TEST_QUESTION, TEST_DATA)
-        print(f"Tytuł:  {report['title']}")
-        print(f"Główna: {report['main_value']}")
-        for row in report["rows"]:
-            print(f"  {row['label']}: {row['value']} ({row.get('detail', '')})")
-        print(f"Summary: {report['summary']}")
-    except json.JSONDecodeError as e:
-        print(f"BŁĄD PARSOWANIA: {e}")
-        print("Model nie zwrócił czystego JSON-a.")
-        print("Odkomentuj print() w bad_report_v1() żeby zobaczyć co zwrócił.")
-    except KeyError as e:
-        print(f"BRAK POLA: {e}")
-        print("Model zwrócił JSON, ale z innymi nazwami pól.")
+    report = bad_report_v1(TEST_QUESTION, TEST_DATA)
+    print(f"Tytuł:  {report['title']}")
+    print(f"Główna: {report['main_value']}")
+    for row in report["rows"]:
+        print(f"  {row['label']}: {row['value']} ({row.get('detail', '')})")
+    print(f"Summary: {report['summary']}")

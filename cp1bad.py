@@ -36,9 +36,6 @@ def bad_ask(question: str) -> str:
     """ANTYWZORZEC: wrzuca wszystkie dane do promptu."""
     all_data = get_all_data()
 
-    # Odkomentuj żeby zobaczyć ile tekstu leci do modelu:
-    # print(f">>> Rozmiar danych w prompcie: {len(all_data)} znaków")
-
     response = client.chat.completions.create(
         model=MODEL,
         messages=[
@@ -54,6 +51,7 @@ Odpowiedz na pytanie użytkownika. Odpowiadaj po polsku, krótko i na temat.""",
             {"role": "user", "content": question},
         ],
     )
+    print(f">>> Tokeny w prompcie: {response.usage.prompt_tokens}")
     return response.choices[0].message.content
 
 
@@ -67,6 +65,8 @@ if __name__ == "__main__":
     print("=" * 60)
     print("ANTYWZORZEC: Prompt Stuffing")
     print("Wszystkie dane z bazy lecą do promptu.")
+    print("Zastanów się: co jeśli baza ma 100x więcej danych?")
+    print("Ile kosztują tokeny za cały dump przy każdym pytaniu?")
     print("=" * 60)
     for q in questions:
         print(f"\nQ: {q}")

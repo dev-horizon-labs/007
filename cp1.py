@@ -116,6 +116,7 @@ EXECUTE_SQL_TOOL = {
 
 
 def good_ask(question: str) -> str:
+    total_tokens = 0  # sumujemy prompt_tokens ze wszystkich wywołań API
     messages = [
         {
             "role": "system",
@@ -132,8 +133,10 @@ Schemat bazy danych:
         messages=messages,
         tools=[EXECUTE_SQL_TOOL],
     )
+    total_tokens += response.usage.prompt_tokens
     message = response.choices[0].message
 
+    # pętla while, bo model może wywołać narzędzie kilka razy zanim odpowie
     while message.tool_calls:
         tool_call = message.tool_calls[0]
         args = json.loads(tool_call.function.arguments)
@@ -162,8 +165,10 @@ Schemat bazy danych:
             model=MODEL,
             messages=messages,
         )
+        total_tokens += response.usage.prompt_tokens
         message = response.choices[0].message
 
+    print(f">>> Tokeny w prompcie (suma): {total_tokens}")
     return message.content
 
 
@@ -186,6 +191,7 @@ if __name__ == "__main__":
     #     "Ile samochodów jest dostępnych w Płocku?",
     #     "Który klient wypożyczył najwięcej samochodów?",
     #     "Jaka jest średnia stawka dzienna w kategorii SUV?",
+    #     "Porównaj liczbę dostępnych aut w Płocku i Warszawie",
     # ]
     # for q in questions:
     #     print(f"\nQ: {q}")
