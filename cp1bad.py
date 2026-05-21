@@ -10,7 +10,8 @@ Uruchom: python cp1bad.py
 
 import sqlite3
 
-from lib.db import DB_PATH, client, MODEL
+from lib.common import MODEL
+from lib.db import DB_PATH, client
 
 
 def get_all_data() -> str:

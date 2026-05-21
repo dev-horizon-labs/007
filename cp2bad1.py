@@ -10,7 +10,8 @@ Uruchom: python cp2bad1.py
 
 import json
 
-from lib.db import client, MODEL, execute_query
+from lib.common import MODEL
+from lib.db import client, execute_query
 
 
 TEST_QUESTION = "Ile samochodów jest dostępnych w podziale na kategorie?"

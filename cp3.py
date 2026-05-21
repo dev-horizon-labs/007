@@ -11,7 +11,8 @@ Uruchom: python cp3.py
 import json
 import os
 
-from lib.db import SCHEMA_DDL, client, MODEL, execute_query, validate_sql
+from lib.common import MODEL, SCHEMA_DDL
+from lib.db import client, execute_query, validate_sql
 
 # Importujesz swoje rozwiązania z CP1 i CP2 — nie kopiujesz kodu!
 from cp1 import EXECUTE_SQL_TOOL

@@ -13,7 +13,8 @@ Uruchom: python cp1.py
 import json
 import sqlite3
 
-from lib.db import DB_PATH, SCHEMA_DDL, client, MODEL, execute_query, validate_sql
+from lib.common import MODEL, SCHEMA_DDL
+from lib.db import DB_PATH, client, execute_query, validate_sql
 
 
 # ════════════════════════════════════════════════════════════════════════

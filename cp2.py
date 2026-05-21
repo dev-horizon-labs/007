@@ -14,7 +14,8 @@ import json
 
 from pydantic import BaseModel, Field
 
-from lib.db import SCHEMA_DDL, client, MODEL, execute_query
+from lib.common import MODEL, SCHEMA_DDL
+from lib.db import client, execute_query
 
 
 # ════════════════════════════════════════════════════════════════════════
