@@ -14,7 +14,7 @@ python cp1bad.py
 
 ## Checkpointy
 
-Każdy plik to jeden checkpoint. Pracujesz w nim — czytasz kod, uruchamiasz, implementujesz.
+Każdy plik to jeden checkpoint. Pracujesz w nim — czytasz kod, odkomentowujesz, uruchamiasz.
 
 ### CP1: Function Calling (`cp1.py`)
 
@@ -22,7 +22,8 @@ Model odpytuje bazę danych narzędziem zamiast zgadywać z danych w prompcie.
 
 1. **Antywzorzec** — uruchom `python cp1bad.py`. Wszystkie dane lecą do promptu.
 2. **Przeczytaj** — `cp1.py` sekcja 1 to mini przykład Function Calling (narzędzie bez parametrów).
-3. **Napisz** — sekcja 2 w `cp1.py`: zbuduj narzędzie `execute_sql(sql_query)` używając tego samego patternu.
+3. **Odkomentuj** — sekcja 2 w `cp1.py`: odkomentuj oznaczone bloki i uruchom.
+4. **Bonus** — sekcja BONUS na końcu pliku: eksperymenty dla chętnych.
 
 ### CP2: Structured Output (`cp2.py`)
 
@@ -30,15 +31,17 @@ Model zwraca ustrukturyzowany raport (Pydantic) zamiast tekstu do parsowania.
 
 1. **Antywzorce** — uruchom `python cp2bad1.py` i `python cp2bad2.py` kilka razy. Czy `json.loads()` zawsze działa?
 2. **Przeczytaj** — `cp2.py` sekcja 1 to mini przykład Structured Output (model z jednym polem `title`).
-3. **Napisz** — sekcja 2 w `cp2.py`: rozbuduj do pełnego `RentalReport` z tabelą danych.
+3. **Odkomentuj** — sekcja 2 w `cp2.py`: odkomentuj modele Pydantic i funkcję `full_report()`.
+4. **Bonus** — sekcja BONUS na końcu pliku: eksperymenty dla chętnych.
 
 ### CP3: Pipeline (`cp3.py`)
 
 Łączysz CP1 i CP2 w pipeline — model odpytuje bazę, formatuje raport, zapisuje do pliku markdown.
 
-1. **Sprawdź importy** — `cp3.py` importuje Twoje rozwiązania z CP1 i CP2 (nie kopiujesz kodu!).
-2. **Napisz `pipeline()`** — połącz Function Calling z Structured Output.
+1. **Sprawdź importy** — `cp3.py` importuje rozwiązania z CP1 i CP2 (muszą być odkomentowane!).
+2. **Odkomentuj `pipeline()`** — odkomentuj funkcję i blok `__main__`.
 3. **Uruchom** — pipeline przetworzy 3 pytania i zapisze raporty do katalogu `raporty/`.
+4. **Bonus** — sekcja BONUS na końcu pliku: eksperymenty dla chętnych.
 
 ## Struktura repo
 
@@ -71,5 +74,4 @@ Model zwraca ustrukturyzowany raport (Pydantic) zamiast tekstu do parsowania.
 ## Potrzebujesz pomocy?
 
 - Podnieś rękę — prowadzący chętnie pomoże
-- Rozwiązania dostaniesz po warsztacie
 - Ważniejsze jest zrozumienie niż ukończenie
