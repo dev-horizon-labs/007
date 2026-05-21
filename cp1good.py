@@ -141,7 +141,7 @@ Schemat bazy danych:
         tool_call = message.tool_calls[0]
         args = json.loads(tool_call.function.arguments)
         sql = args["sql_query"]
-
+        result = ""
         # ── ODKOMENTUJ PONIŻEJ ──
         # if validate_sql(sql):
         #     result = json.dumps(execute_query(sql), ensure_ascii=False)

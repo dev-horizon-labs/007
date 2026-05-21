@@ -20,7 +20,7 @@ from cp2good import ReportRow, RentalReport, full_report
 
 
 # ════════════════════════════════════════════════════════════════════════
-# Zapis raportu do markdown (gotowe — nie zmieniaj)
+# Zapis raportu do markdown
 # ════════════════════════════════════════════════════════════════════════
 
 
@@ -53,99 +53,91 @@ def save_report(report, path: str) -> None:
 
 
 # ════════════════════════════════════════════════════════════════════════
-# TWOJE ZADANIE
-#
 # Pipeline łączy FC (cp1) i SO (cp2):
 #   Faza 1: pytanie → model wywołuje SQL → surowe dane
 #   Faza 2: surowe dane → full_report() → RentalReport
 # ════════════════════════════════════════════════════════════════════════
 
 
-# ── ODKOMENTUJ PONIŻEJ ──
+def pipeline(question: str) -> dict:
+    # Faza 1: Function Calling — model odpytuje bazę
+    messages = [
+        {
+            "role": "system",
+            "content": f"Jesteś asystentem wypożyczalni samochodów. Odpowiadaj po polsku.\nSchemat bazy danych:\n\n{SCHEMA_DDL}",
+        },
+        {"role": "user", "content": question},
+    ]
 
-# def pipeline(question: str) -> dict:
-#     # Faza 1: Function Calling — model odpytuje bazę
-#     messages = [
-#         {
-#             "role": "system",
-#             "content": f"Jesteś asystentem wypożyczalni samochodów. Odpowiadaj po polsku.\nSchemat bazy danych:\n\n{SCHEMA_DDL}",
-#         },
-#         {"role": "user", "content": question},
-#     ]
-#
-#     response = client.chat.completions.create(
-#         model=MODEL,
-#         messages=messages,
-#         tools=[EXECUTE_SQL_TOOL],
-#     )
-#     message = response.choices[0].message
-#
-#     sql_used = ""
-#     raw_data = []
-#
-#     while message.tool_calls:
-#         tool_call = message.tool_calls[0]
-#         args = json.loads(tool_call.function.arguments)
-#         sql = args["sql_query"]
-#
-#         if validate_sql(sql):
-#             sql_used = sql
-#             raw_data = execute_query(sql)
-#             result = json.dumps(raw_data, ensure_ascii=False)
-#         else:
-#             result = json.dumps({"error": "Niedozwolone zapytanie"})
-#
-#         messages.append(message)
-#         messages.append({
-#             "role": "tool",
-#             "tool_call_id": tool_call.id,
-#             "content": result,
-#         })
-#
-#         response = client.chat.completions.create(
-#             model=MODEL,
-#             messages=messages,
-#         )
-#         message = response.choices[0].message
-#
-#     text_answer = message.content
-#
-#     # Faza 2: Structured Output — formatowanie raportu
-#     report = full_report(question, raw_data, sql_used)
-#
-#     return {"text_answer": text_answer, "report": report}
+    response = client.chat.completions.create(
+        model=MODEL,
+        messages=messages,
+        tools=[EXECUTE_SQL_TOOL],
+    )
+    message = response.choices[0].message
 
-# ── KONIEC ──
+    sql_used = ""
+    raw_data = []
+
+    while message.tool_calls:
+        tool_call = message.tool_calls[0]
+        args = json.loads(tool_call.function.arguments)
+        sql = args["sql_query"]
+
+        if validate_sql(sql):
+            sql_used = sql
+            raw_data = execute_query(sql)
+            result = json.dumps(raw_data, ensure_ascii=False)
+        else:
+            result = json.dumps({"error": "Niedozwolone zapytanie"})
+
+        messages.append(message)
+        messages.append({
+            "role": "tool",
+            "tool_call_id": tool_call.id,
+            "content": result,
+        })
+
+        response = client.chat.completions.create(
+            model=MODEL,
+            messages=messages,
+        )
+        message = response.choices[0].message
+
+    text_answer = message.content
+
+    # Faza 2: Structured Output — formatowanie raportu
+    report = full_report(question, raw_data, sql_used)
+
+    return {"text_answer": text_answer, "report": report}
 
 
 # ════════════════════════════════════════════════════════════════════════
 # Uruchamianie
 # ════════════════════════════════════════════════════════════════════════
 
-# ── ODKOMENTUJ PONIŻEJ (po odkomentowaniu pipeline i rozwiązań w cp1 + cp2) ──
 
-# if __name__ == "__main__":
-#     questions = [
-#         "Ile samochodów jest dostępnych w Płocku?",
-#         "Kto wypożyczył najwięcej samochodów?",
-#         "Jaka jest średnia stawka dzienna w każdej kategorii?",
-#     ]
-#
-#     for i, q in enumerate(questions, 1):
-#         print(f"\nQ: {q}")
-#         result = pipeline(q)
-#
-#         print(f"  Tekst: {result['text_answer']}")
-#         r = result["report"]
-#         print(f"  Raport: {r.title} | {r.main_value}")
-#         for row in r.rows:
-#             print(f"    {row.label}: {row.value} ({row.detail})")
-#
-#         path = f"raporty/raport_{i}.md"
-#         save_report(r, path)
-#         print(f"  Zapisano: {path}")
+if __name__ == "__main__":
+    questions = [
+        "Ile samochodów jest dostępnych w Płocku?",
+        "Kto wypożyczył najwięcej samochodów?",
+        "Jaka jest średnia stawka dzienna w każdej kategorii?",
+    ]
 
-# ── KONIEC ──
+    for i, q in enumerate(questions, 1):
+        print(f"\nQ: {q}")
+        result = pipeline(q)
+
+        print(f"  Tekst: {result['text_answer']}")
+        r = result["report"]
+        print(f"  Raport: {r.title} | {r.main_value}")
+        for row in r.rows:
+            print(f"    {row.label}: {row.value} ({row.detail})")
+
+        path = f"raporty/raport_{i}.md"
+        save_report(r, path)
+        print(f"  Zapisano: {path}")
+
 
 # ════════════════════════════════════════════════════════════════════════
 # BONUS
