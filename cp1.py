@@ -5,7 +5,7 @@ CP1: Function Calling
 Ten plik ma DWIE sekcje:
 
   1. MINI PRZYKŁAD — najprostsze Function Calling (narzędzie bez parametrów).
-  2. TWOJE ZADANIE — zbuduj execute_sql z parametrem sql_query.
+  2. TWOJE ZADANIE — odkomentuj execute_sql z parametrem sql_query.
 
 Uruchom: python cp1.py
 """
@@ -90,8 +90,7 @@ def mini_example(question: str) -> str:
 # ════════════════════════════════════════════════════════════════════════
 # SEKCJA 2: TWOJE ZADANIE
 #
-# Uzupełnij dwa TODO poniżej. Reszta kodu jest gotowa.
-# Wzoruj się na mini_example() wyżej.
+# Odkomentuj oznaczone bloki i uruchom. Wzoruj się na mini_example().
 # ════════════════════════════════════════════════════════════════════════
 
 
@@ -103,11 +102,12 @@ EXECUTE_SQL_TOOL = {
         "parameters": {
             "type": "object",
             "properties": {
-                # TODO 1: dodaj parametr "sql_query". Określ typ parametru i jego opis.
-                # Wzór: "nazwa_parametru": {"type": "typ_parametru", "description": "opis_parametru"}
-                # Przykład: "city": {"type": "string", "description": "Nazwa miasta"}
-                # typ_parametru: Typy JSON Schema: https://json-schema.org/understanding-json-schema/reference/type
-                # Więcej o function calling: https://platform.openai.com/docs/guides/function-calling
+                # ── ODKOMENTUJ PONIŻEJ ──
+                # "sql_query": {
+                #     "type": "string",
+                #     "description": "Zapytanie SQL SELECT do wykonania na bazie",
+                # }
+                # ── KONIEC ──
             },
             "required": ["sql_query"],
         },
@@ -142,17 +142,12 @@ Schemat bazy danych:
         args = json.loads(tool_call.function.arguments)
         sql = args["sql_query"]
 
-        # TODO 2: wykonaj zapytanie i zapisz wynik jako string w 'result'
-        # Kroki:
-        #   1. validate_sql(sql) → True/False — sprawdza czy zapytanie jest bezpieczne (tylko SELECT)
-        #   2. execute_query(sql) → list[dict] — wykonuje SQL i zwraca wiersze jako listę słowników
-        #      np. execute_query("SELECT marka, model FROM Samochody LIMIT 2")
-        #      → [{"marka": "Toyota", "model": "Corolla"}, {"marka": "BMW", "model": "X5"}]
-        #   3. json.dumps(wynik) → str — zamienia list[dict] na string JSON
-        #      (pole "content" w wiadomości tool MUSI być stringiem, nie listą)
-        # Jeśli walidacja się nie powiedzie, zwróć komunikat o błędzie jako string: json.dumps({"error": "..."})
-        # HINT: potrzebny jest if :)
-        result = ...
+        # ── ODKOMENTUJ PONIŻEJ ──
+        # if validate_sql(sql):
+        #     result = json.dumps(execute_query(sql), ensure_ascii=False)
+        # else:
+        #     result = json.dumps({"error": "Niedozwolone zapytanie"})
+        # ── KONIEC ──
 
         messages.append(message)
         messages.append({
@@ -183,7 +178,7 @@ if __name__ == "__main__":
     print(f"\nQ: Ile samochodów macie w ofercie?")
     print(f"A: {mini_example('Ile samochodów macie w ofercie?')}")
 
-    # ── Po uzupełnieniu TODO 1 i TODO 2 odkomentuj poniższy blok ──
+    # ── ODKOMENTUJ PONIŻEJ (po odkomentowaniu bloków wyżej) ──
     # print("\n" + "=" * 60)
     # print("SEKCJA 2: TWOJE ROZWIĄZANIE")
     # print("=" * 60)
@@ -196,3 +191,13 @@ if __name__ == "__main__":
     # for q in questions:
     #     print(f"\nQ: {q}")
     #     print(f"A: {ask(q)}")
+
+# ════════════════════════════════════════════════════════════════════════
+# BONUS
+# ════════════════════════════════════════════════════════════════════════
+#
+# 1. Zadaj pytanie wymagające dwóch zapytań SQL — obserwuj w logach
+#    wielokrotne wywołania narzędzia.
+#
+# 2. Dodaj nowe narzędzie (np. get_branch_info zwracające info o oddziale)
+#    — wzoruj się na GET_CAR_COUNT_TOOL.
