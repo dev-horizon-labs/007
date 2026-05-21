@@ -5,7 +5,7 @@ CP3: Pipeline
 Łączysz Function Calling (CP1) ze Structured Output (CP2).
 Model odpytuje bazę → formatuje wynik → zapisuje raport do pliku markdown.
 
-Uruchom: python cp3.py
+Uruchom: python cp3good.py
 """
 
 import json
@@ -15,8 +15,8 @@ from lib.common import MODEL, SCHEMA_DDL
 from lib.db import client, execute_query, validate_sql
 
 # Importy z CP1 i CP2 — działają po odkomentowaniu rozwiązań w tamtych plikach
-from cp1 import EXECUTE_SQL_TOOL
-from cp2 import ReportRow, RentalReport, full_report
+from cp1good import EXECUTE_SQL_TOOL
+from cp2good import ReportRow, RentalReport, full_report
 
 
 # ════════════════════════════════════════════════════════════════════════

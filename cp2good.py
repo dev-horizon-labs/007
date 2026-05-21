@@ -7,7 +7,7 @@ Ten plik ma DWIE sekcje:
   1. MINI PRZYKŁAD — Structured Output z jednym polem (TinyReport).
   2. TWOJE ZADANIE — odkomentuj pełny RentalReport.
 
-Uruchom: python cp2.py
+Uruchom: python cp2good.py
 """
 
 import json

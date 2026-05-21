@@ -7,7 +7,7 @@ Ten plik ma DWIE sekcje:
   1. MINI PRZYKŁAD — najprostsze Function Calling (narzędzie bez parametrów).
   2. TWOJE ZADANIE — odkomentuj execute_sql z parametrem sql_query.
 
-Uruchom: python cp1.py
+Uruchom: python cp1good.py
 """
 
 import json

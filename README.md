@@ -16,29 +16,29 @@ python cp1bad.py
 
 Każdy plik to jeden checkpoint. Pracujesz w nim — czytasz kod, odkomentowujesz, uruchamiasz.
 
-### CP1: Function Calling (`cp1.py`)
+### CP1: Function Calling (`cp1good.py`)
 
 Model odpytuje bazę danych narzędziem zamiast zgadywać z danych w prompcie.
 
 1. **Antywzorzec** — uruchom `python cp1bad.py`. Wszystkie dane lecą do promptu.
-2. **Przeczytaj** — `cp1.py` sekcja 1 to mini przykład Function Calling (narzędzie bez parametrów).
-3. **Odkomentuj** — sekcja 2 w `cp1.py`: odkomentuj oznaczone bloki i uruchom.
+2. **Przeczytaj** — `cp1good.py` sekcja 1 to mini przykład Function Calling (narzędzie bez parametrów).
+3. **Odkomentuj** — sekcja 2 w `cp1good.py`: odkomentuj oznaczone bloki i uruchom.
 4. **Bonus** — sekcja BONUS na końcu pliku: eksperymenty dla chętnych.
 
-### CP2: Structured Output (`cp2.py`)
+### CP2: Structured Output (`cp2good.py`)
 
 Model zwraca ustrukturyzowany raport (Pydantic) zamiast tekstu do parsowania.
 
 1. **Antywzorce** — uruchom `python cp2bad1.py` i `python cp2bad2.py` kilka razy. Czy `json.loads()` zawsze działa?
-2. **Przeczytaj** — `cp2.py` sekcja 1 to mini przykład Structured Output (model z jednym polem `title`).
-3. **Odkomentuj** — sekcja 2 w `cp2.py`: odkomentuj modele Pydantic i funkcję `full_report()`.
+2. **Przeczytaj** — `cp2good.py` sekcja 1 to mini przykład Structured Output (model z jednym polem `title`).
+3. **Odkomentuj** — sekcja 2 w `cp2good.py`: odkomentuj modele Pydantic i funkcję `full_report()`.
 4. **Bonus** — sekcja BONUS na końcu pliku: eksperymenty dla chętnych.
 
-### CP3: Pipeline (`cp3.py`)
+### CP3: Pipeline (`cp3good.py`)
 
 Łączysz CP1 i CP2 w pipeline — model odpytuje bazę, formatuje raport, zapisuje do pliku markdown.
 
-1. **Sprawdź importy** — `cp3.py` importuje rozwiązania z CP1 i CP2 (muszą być odkomentowane!).
+1. **Sprawdź importy** — `cp3good.py` importuje rozwiązania z CP1 i CP2 (muszą być odkomentowane!).
 2. **Odkomentuj `pipeline()`** — odkomentuj funkcję i blok `__main__`.
 3. **Uruchom** — pipeline przetworzy 3 pytania i zapisze raporty do katalogu `raporty/`.
 4. **Bonus** — sekcja BONUS na końcu pliku: eksperymenty dla chętnych.
@@ -47,11 +47,11 @@ Model zwraca ustrukturyzowany raport (Pydantic) zamiast tekstu do parsowania.
 
 ```
 ├── cp1bad.py           ← Antywzorzec CP1: prompt stuffing
-├── cp1.py              ← Checkpoint 1: Function Calling
+├── cp1good.py          ← Checkpoint 1: Function Calling
 ├── cp2bad1.py          ← Antywzorzec CP2: luźna instrukcja JSON
 ├── cp2bad2.py          ← Antywzorzec CP2: sprzeczne instrukcje
-├── cp2.py              ← Checkpoint 2: Structured Output
-├── cp3.py              ← Checkpoint 3: Pipeline (FC + SO → raport .md)
+├── cp2good.py          ← Checkpoint 2: Structured Output
+├── cp3good.py          ← Checkpoint 3: Pipeline (FC + SO → raport .md)
 ├── lib/
 │   └── db.py           ← Połączenie z bazą, walidacja SQL, schema (nie zmieniaj)
 ├── data/
