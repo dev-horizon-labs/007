@@ -20,39 +20,6 @@ from cp2good import ReportRow, RentalReport, full_report
 
 
 # ════════════════════════════════════════════════════════════════════════
-# Zapis raportu do markdown
-# ════════════════════════════════════════════════════════════════════════
-
-
-def save_report(report, path: str) -> None:
-    """Zapisuje RentalReport do pliku markdown."""
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-
-    lines = [
-        f"# {report.title}",
-        "",
-        f"**{report.main_value}**",
-        "",
-    ]
-
-    if report.rows:
-        lines.append("| Nazwa | Wartość | Szczegóły |")
-        lines.append("|-------|---------|-----------|")
-        for row in report.rows:
-            lines.append(f"| {row.label} | {row.value} | {row.detail} |")
-        lines.append("")
-
-    lines.append(report.summary)
-    lines.append("")
-    lines.append("```sql")
-    lines.append(report.sql_used)
-    lines.append("```")
-
-    with open(path, "w", encoding="utf-8") as f:
-        f.write("\n".join(lines) + "\n")
-
-
-# ════════════════════════════════════════════════════════════════════════
 # Pipeline łączy FC (cp1) i SO (cp2):
 #   Faza 1: pytanie → model wywołuje SQL → surowe dane
 #   Faza 2: surowe dane → full_report() → RentalReport
@@ -122,9 +89,12 @@ if __name__ == "__main__":
         "Ile samochodów jest dostępnych w Płocku?",
         "Kto wypożyczył najwięcej samochodów?",
         "Jaka jest średnia stawka dzienna w każdej kategorii?",
+        "Który oddział generuje najwyższe przychody z wypożyczeń?",
+        "Jakie samochody są wypożyczone najdłużej ponad planowany termin zwrotu?",
     ]
 
-    for i, q in enumerate(questions, 1):
+    all_sections = []
+    for q in questions:
         print(f"\nQ: {q}")
         result = pipeline(q)
 
@@ -134,9 +104,23 @@ if __name__ == "__main__":
         for row in r.rows:
             print(f"    {row.label}: {row.value} ({row.detail})")
 
-        path = f"raporty/raport_{i}.md"
-        save_report(r, path)
-        print(f"  Zapisano: {path}")
+        all_sections.append(r)
+
+    path = "raporty/raport.md"
+    os.makedirs("raporty", exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        for r in all_sections:
+            f.write(f"# {r.title}\n\n")
+            f.write(f"**{r.main_value}**\n\n")
+            if r.rows:
+                f.write("| Nazwa | Wartość | Szczegóły |\n")
+                f.write("|-------|---------|----------|\n")
+                for row in r.rows:
+                    f.write(f"| {row.label} | {row.value} | {row.detail} |\n")
+                f.write("\n")
+            f.write(f"{r.summary}\n\n")
+            f.write(f"```sql\n{r.sql_used}\n```\n\n---\n\n")
+    print(f"\nZapisano zbiorczy raport: {path}")
 
 
 # ════════════════════════════════════════════════════════════════════════
