@@ -61,6 +61,7 @@ Model zwraca ustrukturyzowany raport (Pydantic) zamiast tekstu do parsowania.
 │   ├── wypozyczalnia.db ← Baza SQLite (80 samochodów, 120 klientów, 300 wypożyczeń)
 │   └── create_db.py    ← Skrypt seedujący bazę (nie musisz uruchamiać)
 ├── raporty/            ← Tu trafiają wygenerowane raporty (po uruchomieniu CP3)
+├── *.logs.txt          ← Logi API — po uruchomieniu cpX.py pojawi się cpX.logs.txt
 └── requirements.txt
 ```
 
