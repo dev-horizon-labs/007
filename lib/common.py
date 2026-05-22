@@ -1,14 +1,16 @@
-MODEL = "gpt-4o-mini"
+from enum import StrEnum
 
-AVAILABLE_MODELS = [
-    "gpt-4o-mini",
-    "gpt-4.1-mini",
-    "gpt-4.1-nano",
-    "gpt-5-mini",
-    "gpt-5-nano",
-    "gpt-5.4-mini",
-    "gpt-5.4-nano",
-]
+
+class MODELS(StrEnum):
+    gpt_4o_mini = "gpt-4o-mini"
+    gpt_4_1_mini = "gpt-4.1-mini"
+    gpt_4_1_nano = "gpt-4.1-nano"
+    gpt_5_mini = "gpt-5-mini"
+    gpt_5_nano = "gpt-5-nano"
+    gpt_5_4_mini = "gpt-5.4-mini"
+    gpt_5_4_nano = "gpt-5.4-nano"
+
+
 
 SCHEMA_DDL = """
 Oddzialy(id, nazwa, miasto, adres, telefon, aktywny)

@@ -13,7 +13,7 @@ Uruchom: python cp1good.py
 import json
 import sqlite3
 
-from lib.common import MODEL, SCHEMA_DDL
+from lib.common import MODELS, SCHEMA_DDL
 from lib.db import DB_PATH, client, execute_query, validate_sql
 
 
@@ -54,7 +54,7 @@ def mini_example(question: str) -> str:
     ]
 
     response = client.chat.completions.create(
-        model=MODEL,
+        model=MODELS.gpt_4o_mini,
         messages=messages,
         tools=[GET_CAR_COUNT_TOOL],
     )
@@ -79,7 +79,7 @@ def mini_example(question: str) -> str:
 
         # Model formułuje odpowiedź
         response = client.chat.completions.create(
-            model=MODEL,
+            model=MODELS.gpt_4o_mini,
             messages=messages,
         )
         return response.choices[0].message.content
@@ -129,7 +129,7 @@ Schemat bazy danych:
     ]
 
     response = client.chat.completions.create(
-        model=MODEL,
+        model=MODELS.gpt_4o_mini,
         messages=messages,
         tools=[EXECUTE_SQL_TOOL],
     )
@@ -157,7 +157,7 @@ Schemat bazy danych:
         })
 
         response = client.chat.completions.create(
-            model=MODEL,
+            model=MODELS.gpt_4o_mini,
             messages=messages,
         )
         total_tokens += response.usage.prompt_tokens

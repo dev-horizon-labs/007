@@ -11,7 +11,7 @@ Uruchom: python cp3good.py
 import json
 import os
 
-from lib.common import MODEL, SCHEMA_DDL
+from lib.common import MODELS, SCHEMA_DDL
 from lib.db import client, execute_query, validate_sql
 
 # Importy z CP1 i CP2 — działają po odkomentowaniu rozwiązań w tamtych plikach
@@ -70,7 +70,7 @@ def pipeline(question: str) -> dict:
     ]
 
     response = client.chat.completions.create(
-        model=MODEL,
+        model=MODELS.gpt_4o_mini,
         messages=messages,
         tools=[EXECUTE_SQL_TOOL],
     )
@@ -99,7 +99,7 @@ def pipeline(question: str) -> dict:
         })
 
         response = client.chat.completions.create(
-            model=MODEL,
+            model=MODELS.gpt_4o_mini,
             messages=messages,
         )
         message = response.choices[0].message

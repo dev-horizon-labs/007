@@ -10,7 +10,7 @@ Uruchom: python cp1bad.py
 
 import sqlite3
 
-from lib.common import MODEL
+from lib.common import MODELS
 from lib.db import DB_PATH, client
 
 
@@ -37,7 +37,7 @@ def bad_ask(question: str) -> str:
     all_data = get_all_data()
 
     response = client.chat.completions.create(
-        model=MODEL,
+        model=MODELS.gpt_4o_mini,
         messages=[
             {
                 "role": "system",

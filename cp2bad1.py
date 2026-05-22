@@ -10,7 +10,7 @@ Uruchom: python cp2bad1.py
 
 import json
 
-from lib.common import MODEL
+from lib.common import MODELS
 from lib.db import client, execute_query
 
 
@@ -28,7 +28,7 @@ TEST_DATA = execute_query(TEST_SQL)
 def bad_report_v1(question: str, raw_data: list[dict]) -> dict:
     """ANTYWZORZEC: luźna instrukcja — model owija JSON w markdown lub dodaje tekst."""
     response = client.chat.completions.create(
-        model=MODEL,
+        model=MODELS.gpt_4o_mini,
         messages=[
             {
                 "role": "system",

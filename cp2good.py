@@ -14,7 +14,7 @@ import json
 
 from pydantic import BaseModel, Field
 
-from lib.common import MODEL
+from lib.common import MODELS
 from lib.db import client, execute_query
 
 
@@ -50,7 +50,7 @@ def mini_example(question: str, raw_data: list[dict]) -> TinyReport:
     # Bez .parse(): client.chat.completions.create() + json.loads() + Model(**data)
     # Docs: https://developers.openai.com/api/docs/guides/structured-outputs
     result = client.chat.completions.parse(
-        model=MODEL,
+        model=MODELS.gpt_4o_mini,
         messages=[
             {
                 "role": "system",
@@ -99,7 +99,7 @@ def mini_example(question: str, raw_data: list[dict]) -> TinyReport:
 
 # def full_report(question: str, raw_data: list[dict], sql_used: str) -> RentalReport:
 #     result = client.chat.completions.parse(
-#         model=MODEL,
+#         model=MODELS.gpt_4o_mini,
 #         messages=[
 #             {
 #                 "role": "system",
