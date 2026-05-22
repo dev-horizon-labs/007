@@ -145,7 +145,7 @@ if __name__ == "__main__":
 # ════════════════════════════════════════════════════════════════════════
 #
 # 1. Dodaj pole trend: str do ReportRow (np. '↑', '↓', '→')
-#    — jak model je wypełni?
+#    — jak model je wypełni bez dodatkowych danych?
 #
-# 2. Zmień opisy w Field(description=...) — czy model inaczej
-#    formatuje dane?
+# 2. Zmień opisy w Field(description=...) na angielskie — czy model
+#    dalej odpowiada po polsku?

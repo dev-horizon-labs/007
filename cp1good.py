@@ -196,7 +196,7 @@ if __name__ == "__main__":
 # BONUS
 # ════════════════════════════════════════════════════════════════════════
 #
-# 1. Zadaj pytanie wymagające dwóch zapytań SQL — obserwuj w logach
+# 1. Zadaj pytanie wymagające dwóch zapytań SQL (na wzór pytania o dwa miasta) — obserwuj w logach
 #    wielokrotne wywołania narzędzia.
 #
 # 2. Dodaj nowe narzędzie (np. get_branch_info zwracające info o oddziale)

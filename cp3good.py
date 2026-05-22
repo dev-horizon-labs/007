@@ -129,7 +129,8 @@ if __name__ == "__main__":
 # BONUS
 # ════════════════════════════════════════════════════════════════════════
 #
-# 1. Dodaj własne pytanie do listy — np. 'Który oddział ma najwyższe
-#    przychody?'
+# 1. Dodaj własne pytanie do listy — wymyśl coś, co wymaga
+#    JOIN-a między kilkoma tabelami.
 #
-# 2. Zmodyfikuj save_report żeby dodawał datę generowania do nagłówka.
+# 2. Dodaj trzecie narzędzie do pipeline — np. wcześniej wspomniane get_branch_info(city)
+#    zwracające dane oddziału. Czy model sam zdecyduje kiedy go użyć?
