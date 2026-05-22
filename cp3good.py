@@ -10,6 +10,7 @@ Uruchom: python cp3good.py
 
 import json
 import os
+from datetime import datetime
 
 from lib.common import MODELS, SCHEMA_DDL
 from lib.db import client, execute_query, validate_sql
@@ -106,7 +107,8 @@ if __name__ == "__main__":
 
         all_sections.append(r)
 
-    path = "raporty/raport.md"
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    path = f"raporty/raport_{ts}.md"
     os.makedirs("raporty", exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
         for r in all_sections:
