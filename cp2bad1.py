@@ -54,9 +54,16 @@ if __name__ == "__main__":
     print("Uruchom kilka razy — czy nazwy pól są zawsze takie same?")
     print("Sprawdź logi — jak model interpretuje 'sformatuj jako JSON'?")
     print("=" * 60)
-    report = bad_report_v1(TEST_QUESTION, TEST_DATA)
-    print(f"Tytuł:  {report['title']}")
-    print(f"Główna: {report['main_value']}")
-    for row in report["rows"]:
-        print(f"  {row['label']}: {row['value']} ({row.get('detail', '')})")
-    print(f"Summary: {report['summary']}")
+    try:
+        report = bad_report_v1(TEST_QUESTION, TEST_DATA)
+    except (json.JSONDecodeError, KeyError) as e:
+        print(f"\n✗ json.loads() / dostęp do pól nie zadziałał: {e}")
+        print("  Uruchom jeszcze raz — wynik może być inny za każdym razem.")
+        raise SystemExit(1)
+
+    print(f"Tytuł:  {report.get('title', '???')}")
+    print(f"Główna: {report.get('main_value', '???')}")
+    for row in report.get("rows", []):
+        print(f"  {row.get('label', '???')}: {row.get('value', '???')} ({row.get('detail', '')})")
+    print(f"Summary: {report.get('summary', '???')}")
+    print("\n⚠ Zadziałało tym razem — ale czy nazwy pól zawsze będą takie same?")
