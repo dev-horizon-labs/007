@@ -90,8 +90,8 @@ if __name__ == "__main__":
         "Ile samochodów jest dostępnych w Płocku?",
         "Kto wypożyczył najwięcej samochodów?",
         "Jaka jest średnia stawka dzienna w każdej kategorii?",
-        "Który oddział generuje najwyższe przychody z wypożyczeń?",
-        "Jakie samochody są wypożyczone najdłużej ponad planowany termin zwrotu?",
+        "Które marki samochodów są najczęściej wypożyczane?",
+        "Ilu klientów nie ma jeszcze żadnego wypożyczenia?",
     ]
 
     all_sections = []

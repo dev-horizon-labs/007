@@ -13,6 +13,8 @@ class MODELS(StrEnum):
 
 
 SCHEMA_DDL = """
+Baza: SQLite
+
 Oddzialy(id, nazwa, miasto, adres, telefon, aktywny)
 KategorieSamochodow(id, nazwa, opis, stawka_dzienna)
 Pracownicy(id, imie, nazwisko, email, stanowisko, id_oddzialu, data_zatrudnienia, id_przelozonego, aktywny)
