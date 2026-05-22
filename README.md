@@ -74,6 +74,10 @@ Model zwraca ustrukturyzowany raport (Pydantic) zamiast tekstu do parsowania.
 - "Ile zarobiła wypożyczalnia w 2025 roku?"
 - "Który oddział ma najwięcej samochodów w serwisie?"
 
+## Debugowanie
+
+Otwórz dowolny `cpX.py`, ustaw breakpoint (klik na marginesie) i naciśnij **F5** → "Python: File". Przejdziesz kod krok po kroku.
+
 ## Potrzebujesz pomocy?
 
 - Podnieś rękę — prowadzący chętnie pomoże
