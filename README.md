@@ -6,11 +6,13 @@ Warsztat hands-on — zbuduj asystenta, który odpowiada na pytania po polsku, o
 
 Środowisko jest gotowe — Python, baza danych i klucz API są skonfigurowane.
 
-Zacznij od terminala:
+Sprawdź połączenie z modelem:
 
 ```bash
-python cp1bad.py
+python cp0.py
 ```
+
+Jeśli działa — przejdź do CP1.
 
 ## Checkpointy
 
@@ -39,13 +41,13 @@ Model zwraca ustrukturyzowany raport (Pydantic) zamiast tekstu do parsowania.
 Łączysz CP1 i CP2 w pipeline — model odpytuje bazę, formatuje raport, zapisuje do pliku markdown.
 
 1. **Sprawdź importy** — `cp3good.py` importuje rozwiązania z CP1 i CP2 (muszą być odkomentowane!).
-2. **Odkomentuj `pipeline()`** — odkomentuj funkcję i blok `__main__`.
-3. **Uruchom** — pipeline przetworzy 3 pytania i zapisze raporty do katalogu `raporty/`.
-4. **Bonus** — sekcja BONUS na końcu pliku: eksperymenty dla chętnych.
+2. **Uruchom** — pipeline przetworzy 5 pytań i zapisze zbiorczy raport do `raporty/`.
+3. **Bonus** — sekcja BONUS na końcu pliku: eksperymenty dla chętnych.
 
 ## Struktura repo
 
 ```
+├── cp0.py              ← Ping pong — test połączenia z modelem
 ├── cp1bad.py           ← Antywzorzec CP1: prompt stuffing
 ├── cp1good.py          ← Checkpoint 1: Function Calling
 ├── cp2bad1.py          ← Antywzorzec CP2: luźna instrukcja JSON
@@ -53,12 +55,12 @@ Model zwraca ustrukturyzowany raport (Pydantic) zamiast tekstu do parsowania.
 ├── cp2good.py          ← Checkpoint 2: Structured Output
 ├── cp3good.py          ← Checkpoint 3: Pipeline (FC + SO → raport .md)
 ├── lib/
-│   └── db.py           ← Połączenie z bazą, walidacja SQL, schema (nie zmieniaj)
+│   ├── common.py       ← Modele (MODELS), schema DDL
+│   └── db.py           ← Połączenie z bazą, walidacja SQL (nie zmieniaj)
 ├── data/
 │   ├── wypozyczalnia.db ← Baza SQLite (80 samochodów, 120 klientów, 300 wypożyczeń)
 │   └── create_db.py    ← Skrypt seedujący bazę (nie musisz uruchamiać)
 ├── raporty/            ← Tu trafiają wygenerowane raporty (po uruchomieniu CP3)
-├── .env                ← URL proxy API (nie zmieniaj)
 └── requirements.txt
 ```
 
