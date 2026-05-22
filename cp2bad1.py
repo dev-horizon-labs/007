@@ -63,11 +63,11 @@ def extract_keys(obj, prefix="") -> set[str]:
 if __name__ == "__main__":
     print("=" * 60)
     print("ANTYWZORZEC: Luźna instrukcja JSON")
-    print("3 wywołania tego samego promptu — porównanie struktur")
+    print("5 wywołań tego samego promptu — porównanie struktur")
     print("=" * 60)
 
     results = []
-    for i in range(3):
+    for i in range(5):
         try:
             report = bad_report_v1(TEST_QUESTION, TEST_DATA)
             keys = extract_keys(report)
