@@ -73,17 +73,17 @@ def mini_example(question: str, raw_data: list[dict]) -> TinyReport:
 # ════════════════════════════════════════════════════════════════════════
 
 
-# ── ODKOMENTUJ PONIŻEJ ──
+## ── ODKOMENTUJ PONIŻEJ ──
 
 # class ReportRow(BaseModel):
 #     label: str = Field(..., description="Nazwa wiersza, np. 'SUV', 'Jan Kowalski'")
 #     value: str = Field(..., description="Wartość główna, np. '5', '3420 PLN'")
 #     detail: str = Field(..., description="Dodatkowa informacja, np. '280 PLN/dzień'")
 
-# ── KONIEC ──
+## ── KONIEC ──
 
 
-# ── ODKOMENTUJ PONIŻEJ ──
+## ── ODKOMENTUJ PONIŻEJ ──
 
 # class RentalReport(BaseModel):
 #     title: str = Field(..., description="Tytuł raportu po polsku")
@@ -92,10 +92,10 @@ def mini_example(question: str, raw_data: list[dict]) -> TinyReport:
 #     summary: str = Field(..., description="1-2 zdania podsumowania")
 #     sql_used: str = Field(..., description="Zapytanie SQL użyte do pobrania danych")
 
-# ── KONIEC ──
+## ── KONIEC ──
 
 
-# ── ODKOMENTUJ PONIŻEJ ──
+## ── ODKOMENTUJ PONIŻEJ ──
 
 # def full_report(question: str, raw_data: list[dict], sql_used: str) -> RentalReport:
 #     result = client.chat.completions.parse(
@@ -114,7 +114,7 @@ def mini_example(question: str, raw_data: list[dict]) -> TinyReport:
 #     )
 #     return result.choices[0].message.parsed
 
-# ── KONIEC ──
+## ── KONIEC ──
 
 
 # ════════════════════════════════════════════════════════════════════════

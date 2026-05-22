@@ -102,12 +102,12 @@ EXECUTE_SQL_TOOL = {
         "parameters": {
             "type": "object",
             "properties": {
-                # ── ODKOMENTUJ PONIŻEJ ──
+                ## ── ODKOMENTUJ PONIŻEJ ──
                 # "sql_query": {
                 #     "type": "string",
                 #     "description": "Zapytanie SQL SELECT do wykonania na bazie",
                 # }
-                # ── KONIEC ──
+                ## ── KONIEC ──
             },
             "required": ["sql_query"],
         },
@@ -143,12 +143,12 @@ Schemat bazy danych:
             args = json.loads(tool_call.function.arguments)
             sql = args["sql_query"]
             result = ""
-            # ── ODKOMENTUJ PONIŻEJ ──
+            ## ── ODKOMENTUJ PONIŻEJ ──
             # if validate_sql(sql):
             #     result = json.dumps(execute_query(sql), ensure_ascii=False)
             # else:
             #     result = json.dumps({"error": "Niedozwolone zapytanie"})
-            # ── KONIEC ──
+            ## ── KONIEC ──
 
             messages.append({
                 "role": "tool",
@@ -178,7 +178,7 @@ if __name__ == "__main__":
     print(f"\nQ: Ile samochodów macie w ofercie?")
     print(f"A: {mini_example('Ile samochodów macie w ofercie?')}")
 
-    # ── ODKOMENTUJ PONIŻEJ (po odkomentowaniu bloków wyżej) ──
+    ## ── ODKOMENTUJ PONIŻEJ (po odkomentowaniu bloków wyżej) ──
     # print("\n" + "=" * 60)
     # print("SEKCJA 2: TWOJE ROZWIĄZANIE")
     # print("=" * 60)
