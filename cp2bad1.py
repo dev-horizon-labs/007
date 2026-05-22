@@ -2,8 +2,8 @@
 CP2 — ANTYWZORZEC: Luźna instrukcja JSON
 ==========================================
 
-Model dostaje luźną instrukcję "sformatuj jako JSON".
-Uruchom KILKA RAZY — czy json.loads() zawsze działa?
+Model dostaje luźną instrukcję "sformatuj jako JSON" — bez schematu.
+Skrypt wywołuje model 3 razy i porównuje klucze w odpowiedziach.
 
 Uruchom: python cp2bad1.py
 """
@@ -26,14 +26,13 @@ TEST_DATA = execute_query(TEST_SQL)
 
 
 def bad_report_v1(question: str, raw_data: list[dict]) -> dict:
-    """ANTYWZORZEC: luźna instrukcja — model owija JSON w markdown lub dodaje tekst."""
+    """ANTYWZORZEC: luźna instrukcja — model sam wymyśla strukturę JSON."""
     response = client.chat.completions.create(
         model=MODELS.gpt_4o_mini,
         messages=[
             {
                 "role": "system",
-                "content": """Odpowiedz na pytanie o wypożyczalnię samochodów.
-Sformatuj odpowiedź jako JSON z polami: title, main_value, rows, summary.""",
+                "content": "Odpowiedz na pytanie o wypożyczalnię samochodów. Sformatuj odpowiedź jako JSON.",
             },
             {
                 "role": "user",
@@ -48,22 +47,40 @@ Sformatuj odpowiedź jako JSON z polami: title, main_value, rows, summary.""",
     return json.loads(text)
 
 
+def extract_keys(obj, prefix="") -> set[str]:
+    """Rekurencyjnie zbiera ścieżki kluczy z JSON-a."""
+    keys = set()
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            path = f"{prefix}.{k}" if prefix else k
+            keys.add(path)
+            keys |= extract_keys(v, path)
+    elif isinstance(obj, list) and obj:
+        keys |= extract_keys(obj[0], f"{prefix}[]")
+    return keys
+
+
 if __name__ == "__main__":
     print("=" * 60)
     print("ANTYWZORZEC: Luźna instrukcja JSON")
-    print("Uruchom kilka razy — czy nazwy pól są zawsze takie same?")
-    print("Sprawdź logi — jak model interpretuje 'sformatuj jako JSON'?")
+    print("3 wywołania tego samego promptu — porównanie struktur")
     print("=" * 60)
-    try:
-        report = bad_report_v1(TEST_QUESTION, TEST_DATA)
-    except (json.JSONDecodeError, KeyError) as e:
-        print(f"\n✗ json.loads() / dostęp do pól nie zadziałał: {e}")
-        print("  Uruchom jeszcze raz — wynik może być inny za każdym razem.")
-        raise SystemExit(1)
 
-    print(f"Tytuł:  {report.get('title', '???')}")
-    print(f"Główna: {report.get('main_value', '???')}")
-    for row in report.get("rows", []):
-        print(f"  {row.get('label', '???')}: {row.get('value', '???')} ({row.get('detail', '')})")
-    print(f"Summary: {report.get('summary', '???')}")
-    print("\n⚠ Zadziałało tym razem — ale czy nazwy pól zawsze będą takie same?")
+    results = []
+    for i in range(3):
+        try:
+            report = bad_report_v1(TEST_QUESTION, TEST_DATA)
+            keys = extract_keys(report)
+            results.append(keys)
+            print(f"\nRun {i + 1} — klucze: {sorted(keys)}")
+        except json.JSONDecodeError as e:
+            results.append(None)
+            print(f"\nRun {i + 1} — json.loads() FAIL: {e}")
+
+    valid = [r for r in results if r is not None]
+    if len(valid) >= 2 and len(set(frozenset(r) for r in valid)) > 1:
+        print("\n✗ Struktury się RÓŻNIĄ między wywołaniami!")
+        print("  Bez schematu nie masz gwarancji, że kod parsujący zadziała.")
+    elif len(valid) >= 2:
+        print("\n⚠ Tym razem struktury się zgadzają — ale nie ma gwarancji.")
+        print("  Uruchom jeszcze raz albo zmień pytanie.")
