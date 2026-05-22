@@ -80,23 +80,23 @@ def pipeline(question: str) -> dict:
     raw_data = []
 
     while message.tool_calls:
-        tool_call = message.tool_calls[0]
-        args = json.loads(tool_call.function.arguments)
-        sql = args["sql_query"]
-
-        if validate_sql(sql):
-            sql_used = sql
-            raw_data = execute_query(sql)
-            result = json.dumps(raw_data, ensure_ascii=False)
-        else:
-            result = json.dumps({"error": "Niedozwolone zapytanie"})
-
         messages.append(message)
-        messages.append({
-            "role": "tool",
-            "tool_call_id": tool_call.id,
-            "content": result,
-        })
+        for tool_call in message.tool_calls:
+            args = json.loads(tool_call.function.arguments)
+            sql = args["sql_query"]
+
+            if validate_sql(sql):
+                sql_used = sql
+                raw_data = execute_query(sql)
+                result = json.dumps(raw_data, ensure_ascii=False)
+            else:
+                result = json.dumps({"error": "Niedozwolone zapytanie"})
+
+            messages.append({
+                "role": "tool",
+                "tool_call_id": tool_call.id,
+                "content": result,
+            })
 
         response = client.chat.completions.create(
             model=MODELS.gpt_4o_mini,

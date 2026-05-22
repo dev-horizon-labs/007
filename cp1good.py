@@ -138,23 +138,23 @@ Schemat bazy danych:
 
     # pętla while, bo model może wywołać narzędzie kilka razy zanim odpowie
     while message.tool_calls:
-        tool_call = message.tool_calls[0]
-        args = json.loads(tool_call.function.arguments)
-        sql = args["sql_query"]
-        result = ""
-        # ── ODKOMENTUJ PONIŻEJ ──
-        # if validate_sql(sql):
-        #     result = json.dumps(execute_query(sql), ensure_ascii=False)
-        # else:
-        #     result = json.dumps({"error": "Niedozwolone zapytanie"})
-        # ── KONIEC ──
-
         messages.append(message)
-        messages.append({
-            "role": "tool",
-            "tool_call_id": tool_call.id,
-            "content": result,
-        })
+        for tool_call in message.tool_calls:
+            args = json.loads(tool_call.function.arguments)
+            sql = args["sql_query"]
+            result = ""
+            # ── ODKOMENTUJ PONIŻEJ ──
+            # if validate_sql(sql):
+            #     result = json.dumps(execute_query(sql), ensure_ascii=False)
+            # else:
+            #     result = json.dumps({"error": "Niedozwolone zapytanie"})
+            # ── KONIEC ──
+
+            messages.append({
+                "role": "tool",
+                "tool_call_id": tool_call.id,
+                "content": result,
+            })
 
         response = client.chat.completions.create(
             model=MODELS.gpt_4o_mini,
