@@ -53,9 +53,14 @@ if __name__ == "__main__":
     print("Prompt mówi: 'wyjaśnij wnioski' + 'podaj JSON' — co wygra?")
     print("Sprawdź logi — czy model zwrócił TYLKO JSON?")
     print("=" * 60)
-    report = bad_report_v2(TEST_QUESTION, TEST_DATA)
-    print(f"Tytuł:  {report['title']}")
-    print(f"Główna: {report['main_value']}")
-    for row in report["rows"]:
-        print(f"  {row['label']}: {row['value']} ({row.get('detail', '')})")
-    print(f"Summary: {report['summary']}")
+    try:
+        report = bad_report_v2(TEST_QUESTION, TEST_DATA)
+        print(f"Tytuł:  {report['title']}")
+        print(f"Główna: {report['main_value']}")
+        for row in report["rows"]:
+            print(f"  {row['label']}: {row['value']} ({row.get('detail', '')})")
+        print(f"Summary: {report['summary']}")
+    except json.JSONDecodeError:
+        print("\n✗ json.loads() FAIL — model zwrócił tekst + JSON zamiast czystego JSON-a.")
+        print("  Sprzeczne instrukcje ('wyjaśnij' + 'podaj JSON') = model próbuje oba naraz.")
+        print("  Sprawdź logi (cp2bad2.logs.txt) żeby zobaczyć co dokładnie zwrócił.")
