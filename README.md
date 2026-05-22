@@ -62,7 +62,7 @@ Model zwraca ustrukturyzowany raport (Pydantic) zamiast tekstu do parsowania.
 │   └── create_db.py    ← Skrypt seedujący bazę (nie musisz uruchamiać)
 ├── raporty/            ← Tu trafiają wygenerowane raporty (po uruchomieniu CP3)
 ├── *.logs.txt          ← Logi API — po uruchomieniu cpX.py pojawi się cpX.logs.txt
-└── requirements.txt
+└── requirements.txt    ← Zależności (openai, pydantic) — instalowane automatycznie
 ```
 
 ## Przydatne pytania do testowania
