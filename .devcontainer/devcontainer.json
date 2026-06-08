@@ -2,6 +2,14 @@
   "name": "dev_horizon labs — Text-to-SQL",
   "image": "mcr.microsoft.com/devcontainers/python:3.12",
   "postCreateCommand": "pip install -r requirements.txt",
+  "secrets": {
+    "OPENAI_API_KEY": {
+      "description": "Klucz API do proxy LLM"
+    },
+    "OPENAI_BASE_URL": {
+      "description": "URL proxy LLM"
+    }
+  },
   "customizations": {
     "vscode": {
       "extensions": [
