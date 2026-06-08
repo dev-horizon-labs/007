@@ -200,8 +200,20 @@ if __name__ == "__main__":
 # BONUS
 # ════════════════════════════════════════════════════════════════════════
 #
-# 1. Zadaj pytanie wymagające dwóch zapytań SQL (na wzór pytania o dwa miasta) — obserwuj w logach
-#    wielokrotne wywołania narzędzia.
+# 1. Zapytaj o coś, czego model nie może wiedzieć z bazy
+#    (np. "Jaka jest pogoda w Płocku?").
+#    Wpisz pytanie w liście questions na dole pliku (sekcja 2) i uruchom:
 #
-# 2. Dodaj nowe narzędzie (np. get_branch_info zwracające info o oddziale)
-#    — wzoruj się na GET_CAR_COUNT_TOOL.
+#      python cp1good.py
+#
+#    Co się stanie? Zajrzyj do cp1good.logs.txt.
+#
+# 2. Dodaj nowe narzędzie get_branch_info(miasto: str) zwracające dane
+#    o oddziale w danym mieście — wzoruj się na GET_CAR_COUNT_TOOL.
+#
+# 3. Zamiast wklejać schemat bazy ręcznie, napisz narzędzie
+#    get_schema() które wyciąga go z bazy dynamicznie:
+#
+#      SELECT name, sql FROM sqlite_master WHERE type='table'
+#
+#    Podaj je modelowi zamiast SCHEMA_DDL w prompcie systemowym.
