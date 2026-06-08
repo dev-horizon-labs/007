@@ -19,7 +19,8 @@ from lib.db import client, execute_query
 
 
 # ════════════════════════════════════════════════════════════════════════
-# Dane testowe — wynik z bazy (hardcoded, żeby skupić się na SO)
+# Dane testowe — wynik zapytania SQL wpisany bezpośrednio w kod,
+# żeby skupić się na nauce Structured Output, a nie na pisaniu SQL.
 # ════════════════════════════════════════════════════════════════════════
 
 TEST_QUESTION = "Ile samochodów jest dostępnych w podziale na kategorie?"
@@ -49,12 +50,17 @@ def mini_example(question: str, raw_data: list[dict]) -> TinyReport:
     # .parse() to wrapper SDK — automatycznie konwertuje response na obiekt Pydantic (.parsed).
     # Bez .parse(): client.chat.completions.create() + json.loads() + Model(**data)
     # Docs: https://developers.openai.com/api/docs/guides/structured-outputs
+
+    # ── PROMPT SYSTEMOWY — tu definiujesz rolę i kontekst dla modelu ────
+    system_content = "Formatujesz dane z bazy wypożyczalni samochodów w raport."
+    # ────────────────────────────────────────────────────────────────────
+
     result = client.chat.completions.parse(
         model=MODELS.gpt_4o_mini,
         messages=[
             {
                 "role": "system",
-                "content": "Formatujesz dane z bazy wypożyczalni samochodów w raport.",
+                "content": system_content,
             },
             {
                 "role": "user",
