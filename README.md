@@ -19,6 +19,8 @@ W tym warsztacie używamy **OpenAI API**. Klucz jest już skonfigurowany — kod
 W panelu po lewej stronie edytora masz zainstalowane rozszerzenie **SQLite Viewer**.
 Kliknij na plik `data/wypozyczalnia.db` — zobaczysz tabele i dane w czytelnej formie.
 
+<!-- TODO: screenshot SQLite Viewer z otwartą bazą wypozyczalnia.db -->
+
 ---
 
 ## Baza danych
@@ -34,6 +36,8 @@ Baza to wypożyczalnia samochodów z oddziałami w Płocku, Warszawie, Łodzi i 
 | `Pracownicy` | ~30 pracowników |
 | `Wypozyczenia` | 300 wypożyczeń |
 | `Platnosci` | Płatności powiązane z wypożyczeniami |
+
+<!-- TODO: screenshot schematu relacji między tabelami -->
 
 ---
 
@@ -159,8 +163,6 @@ Modele dostępne na warsztacie są zdefiniowane w `lib/common.py` (klasa `MODELS
 | `MODELS.gpt_4_1_nano` | gpt-4.1-nano |
 
 Żeby zmienić model w dowolnym checkpoincie, zamień `MODELS.gpt_4o_mini` na inny w wywołaniu `client.chat.completions.create(...)`.
-
-Pełna lista modeli OpenAI: https://platform.openai.com/docs/models
 
 ---
 
