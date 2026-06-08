@@ -1,6 +1,12 @@
 from enum import StrEnum
 
 
+# ── Dostępne modele LLM ──────────────────────────────────────────────
+# Tutaj definiujemy nazwy modeli OpenAI dostępnych na warsztacie.
+# Żeby zmienić model w dowolnym checkpoincie, zamień np.:
+#   model=MODELS.gpt_4o_mini  →  model=MODELS.gpt_4_1_mini
+# Pełna lista modeli OpenAI: https://platform.openai.com/docs/models
+# ────────────────────────────────────────────────────────────────────
 class MODELS(StrEnum):
     gpt_4o_mini = "gpt-4o-mini"
     gpt_4_1_mini = "gpt-4.1-mini"
