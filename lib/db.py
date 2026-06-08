@@ -101,7 +101,7 @@ class _LoggingClient:
 # Używasz go tak: client.chat.completions.create(...)
 # Skąd pochodzi klucz API? Z pliku .env — ładowany automatycznie przez load_dotenv().
 # Dodatkowo: każde wywołanie .create() lub .parse() jest zapisywane
-# do pliku cpX.logs.txt obok pliku który uruchomiłeś.
+# do pliku <nazwa_skryptu>.logs.txt w głównym katalogu repozytorium.
 # ────────────────────────────────────────────────────────────────────
 client = _LoggingClient(_raw_client)
 
