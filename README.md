@@ -12,7 +12,7 @@ Pracujesz w **GitHub Codespaces** — środowisko jest gotowe. Python, baza dany
 
 Model językowy (LLM) to zewnętrzna usługa — tak jak strona internetowa, do której wysyłasz zapytania. Żeby korzystać z tej usługi, potrzebny jest **klucz API** — coś w rodzaju hasła identyfikującego, że masz prawo wysyłać zapytania.
 
-W tym warsztacie używamy **OpenAI API**. Klucz jest już wpisany w plik `.env` i kod ładuje go automatycznie. Nie musisz nic robić.
+W tym warsztacie używamy **OpenAI API**. Klucz jest już skonfigurowany — kod ładuje go automatycznie. Nie musisz nic robić.
 
 ### Przeglądanie bazy danych
 
