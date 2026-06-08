@@ -161,6 +161,10 @@ Modele dostępne na warsztacie są zdefiniowane w `lib/common.py` (klasa `MODELS
 | `MODELS.gpt_4o_mini` | gpt-4o-mini |
 | `MODELS.gpt_4_1_mini` | gpt-4.1-mini |
 | `MODELS.gpt_4_1_nano` | gpt-4.1-nano |
+| `MODELS.gpt_5_mini` | gpt-5-mini |
+| `MODELS.gpt_5_nano` | gpt-5-nano |
+| `MODELS.gpt_5_4_mini` | gpt-5.4-mini |
+| `MODELS.gpt_5_4_nano` | gpt-5.4-nano |
 
 Żeby zmienić model w dowolnym checkpoincie, zamień `MODELS.gpt_4o_mini` na inny w wywołaniu `client.chat.completions.create(...)`.
 
