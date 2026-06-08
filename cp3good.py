@@ -21,7 +21,7 @@ from cp2good import ReportRow, RentalReport, full_report
 
 
 # ════════════════════════════════════════════════════════════════════════
-# Pipeline łączy FC (cp1) i SO (cp2):
+# Pipeline łączy Function Calling (cp1) i Structured Output (cp2):
 #   Faza 1: pytanie → model wywołuje SQL → surowe dane
 #   Faza 2: surowe dane → full_report() → RentalReport
 # ════════════════════════════════════════════════════════════════════════
