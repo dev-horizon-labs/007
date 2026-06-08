@@ -1,82 +1,168 @@
 # dev_horizon labs: Text-to-SQL
 
-Warsztat hands-on — zbuduj asystenta, który odpowiada na pytania po polsku, odpytując bazę wypożyczalni samochodów.
+Na tym warsztacie zbudujesz asystenta, który odpowiada na pytania po polsku, odpytując bazę danych wypożyczalni samochodów. Nauczysz się dwóch kluczowych technik pracy z modelami językowymi: Function Calling i Structured Output.
 
-## Jak zacząć
+---
 
-Środowisko jest gotowe — Python, baza danych i klucz API są skonfigurowane.
+## Środowisko
 
-Sprawdź połączenie z modelem:
+Pracujesz w **GitHub Codespaces** — środowisko jest gotowe. Python, baza danych i wszystkie biblioteki są już zainstalowane. Nic nie konfigurujesz.
+
+### Model językowy i klucz API
+
+Model językowy (LLM) to zewnętrzna usługa — tak jak strona internetowa, do której wysyłasz zapytania. Żeby korzystać z tej usługi, potrzebny jest **klucz API** — coś w rodzaju hasła identyfikującego, że masz prawo wysyłać zapytania.
+
+W tym warsztacie używamy **OpenAI API**. Klucz jest już wpisany w plik `.env` i kod ładuje go automatycznie. Nie musisz nic robić.
+
+### Przeglądanie bazy danych
+
+W panelu po lewej stronie edytora masz zainstalowane rozszerzenie **SQLite Viewer**.
+Kliknij na plik `data/wypozyczalnia.db` — zobaczysz tabele i dane w czytelnej formie.
+
+---
+
+## Baza danych
+
+Baza to wypożyczalnia samochodów z oddziałami w Płocku, Warszawie, Łodzi i Gdańsku.
+
+| Tabela | Zawartość |
+|--------|-----------|
+| `Oddzialy` | 6 oddziałów |
+| `KategorieSamochodow` | 6 kategorii (Ekonomiczny, SUV, Elektryczny…) |
+| `Samochody` | 80 samochodów |
+| `Klienci` | 120 klientów |
+| `Pracownicy` | ~30 pracowników |
+| `Wypozyczenia` | 300 wypożyczeń |
+| `Platnosci` | Płatności powiązane z wypożyczeniami |
+
+---
+
+## Krok 0: Sprawdź połączenie z modelem
 
 ```bash
 python cp0.py
 ```
 
+Powinieneś zobaczyć: `pong` (lub podobną odpowiedź modelu).
 Jeśli działa — przejdź do CP1.
 
-## Checkpointy
+---
 
-Każdy plik to jeden checkpoint. Pracujesz w nim — czytasz kod, odkomentowujesz, uruchamiasz.
-
-### CP1: Function Calling (`cp1good.py`)
+## CP1: Function Calling (`cp1good.py`)
 
 Model odpytuje bazę danych narzędziem zamiast zgadywać z danych w prompcie.
 
-1. **Antywzorzec** — uruchom `python cp1bad.py`. Wszystkie dane lecą do promptu.
-2. **Przeczytaj** — `cp1good.py` sekcja 1 to mini przykład Function Calling (narzędzie bez parametrów).
-3. **Odkomentuj** — sekcja 2 w `cp1good.py`: odkomentuj oznaczone bloki i uruchom.
-4. **Bonus** — sekcja BONUS na końcu pliku: eksperymenty dla chętnych.
+### Krok 1 — obejrzyj antywzorzec
 
-### CP2: Structured Output (`cp2good.py`)
-
-Model zwraca ustrukturyzowany raport (Pydantic) zamiast tekstu do parsowania.
-
-1. **Antywzorce** — uruchom `python cp2bad1.py` i `python cp2bad2.py` kilka razy. Czy `json.loads()` zawsze działa?
-2. **Przeczytaj** — `cp2good.py` sekcja 1 to mini przykład Structured Output (model z jednym polem `title`).
-3. **Odkomentuj** — sekcja 2 w `cp2good.py`: odkomentuj modele Pydantic i funkcję `full_report()`.
-4. **Bonus** — sekcja BONUS na końcu pliku: eksperymenty dla chętnych.
-
-### CP3: Pipeline (`cp3good.py`)
-
-Łączysz CP1 i CP2 w pipeline — model odpytuje bazę, formatuje raport, zapisuje do pliku markdown.
-
-1. **Sprawdź importy** — `cp3good.py` importuje rozwiązania z CP1 i CP2 (muszą być odkomentowane!).
-2. **Uruchom** — pipeline przetworzy 5 pytań i zapisze zbiorczy raport do `raporty/`.
-3. **Bonus** — sekcja BONUS na końcu pliku: eksperymenty dla chętnych.
-
-## Struktura repo
-
-```
-├── cp0.py              ← Ping pong — test połączenia z modelem
-├── cp1bad.py           ← Antywzorzec CP1: prompt stuffing
-├── cp1good.py          ← Checkpoint 1: Function Calling
-├── cp2bad1.py          ← Antywzorzec CP2: luźna instrukcja JSON
-├── cp2bad2.py          ← Antywzorzec CP2: sprzeczne instrukcje
-├── cp2good.py          ← Checkpoint 2: Structured Output
-├── cp3good.py          ← Checkpoint 3: Pipeline (FC + SO → raport .md)
-├── lib/
-│   ├── common.py       ← Modele (MODELS), schema DDL
-│   └── db.py           ← Połączenie z bazą, walidacja SQL (nie zmieniaj)
-├── data/
-│   ├── wypozyczalnia.db ← Baza SQLite (80 samochodów, 120 klientów, 300 wypożyczeń)
-│   └── create_db.py    ← Skrypt seedujący bazę (nie musisz uruchamiać)
-├── raporty/            ← Tu trafiają wygenerowane raporty (po uruchomieniu CP3)
-├── *.logs.txt          ← Logi API — po uruchomieniu cpX.py pojawi się cpX.logs.txt
-└── requirements.txt    ← Zależności (openai, pydantic) — instalowane automatycznie
+```bash
+python cp1bad.py
 ```
 
-## Przydatne pytania do testowania
+Zobaczysz wszystkie dane z bazy wrzucone do promptu i liczbę użytych tokenów. To nieefektywne — co jeśli baza ma 100× więcej danych?
 
-- "Ile samochodów jest dostępnych w Płocku?"
-- "Który klient wypożyczył najwięcej samochodów?"
-- "Jaka jest średnia stawka dzienna w kategorii SUV?"
-- "Pokaż aktywne wypożyczenia z opóźnionym zwrotem"
-- "Ile zarobiła wypożyczalnia w 2025 roku?"
-- "Który oddział ma najwięcej samochodów w serwisie?"
+### Krok 2 — przeczytaj mini przykład
 
-## Debugowanie
+Otwórz `cp1good.py` i przeczytaj **Sekcję 1** (MINI PRZYKŁAD). To najprostsze możliwe Function Calling: narzędzie bez parametrów, które zwraca liczbę samochodów. Przeczytaj kod — zrozum jak działa pętla pytanie → narzędzie → wynik → odpowiedź.
 
-Otwórz dowolny `cpX.py`, ustaw breakpoint (klik na marginesie) i naciśnij **F5** → "Python: File". Przejdziesz kod krok po kroku.
+### Krok 3 — twoje zadanie
+
+W `cp1good.py` odkomentuj **dwa oznaczone bloki** w Sekcji 2:
+1. Definicję parametru `sql_query` w `EXECUTE_SQL_TOOL`
+2. Logikę walidacji SQL w funkcji `ask()`
+
+Następnie odkomentuj blok uruchamiający Sekcję 2 na dole pliku i uruchom:
+
+```bash
+python cp1good.py
+```
+
+Powinieneś zobaczyć odpowiedzi na 4 pytania i liczbę tokenów przy każdym.
+
+---
+
+## CP2: Structured Output (`cp2good.py`)
+
+Model zwraca ustrukturyzowany raport jako obiekt Pythona zamiast tekstu do ręcznego parsowania.
+
+### Krok 1 — obejrzyj antywzorce
+
+```bash
+python cp2bad1.py
+```
+
+```bash
+python cp2bad2.py
+```
+
+Uruchom każdy kilka razy. Zauważ że `json.loads()` czasem się nie powiedzie albo struktura odpowiedzi jest za każdym razem inna.
+
+### Krok 2 — przeczytaj mini przykład
+
+Otwórz `cp2good.py` i przeczytaj **Sekcję 1** (MINI PRZYKŁAD). Jeden model Pydantic z jednym polem `title`. Zwróć uwagę na `client.chat.completions.parse()` zamiast `.create()` — to wrapper SDK, który automatycznie konwertuje odpowiedź na obiekt Pydantic.
+
+### Krok 3 — twoje zadanie
+
+W `cp2good.py` odkomentuj **trzy oznaczone bloki** w Sekcji 2:
+1. Klasę `ReportRow`
+2. Klasę `RentalReport`
+3. Funkcję `full_report()`
+
+Następnie odkomentuj blok uruchamiający Sekcję 2 na dole pliku i uruchom:
+
+```bash
+python cp2good.py
+```
+
+Powinieneś zobaczyć pełny raport z tytułem, wartością główną, tabelą wierszy i podsumowaniem.
+
+---
+
+## CP3: Pipeline (`cp3good.py`)
+
+Łączysz CP1 i CP2 w jeden pipeline — model odpytuje bazę, formatuje raport, zapisuje do pliku markdown.
+
+### Krok 1 — sprawdź importy
+
+`cp3good.py` importuje `ask` z CP1 i `full_report` z CP2. Upewnij się że **oba** checkpointy mają odkomentowane sekcje zadań (CP1 Sekcja 2, CP2 Sekcja 2).
+
+### Krok 2 — uruchom pipeline
+
+```bash
+python cp3good.py
+```
+
+Pipeline przetworzy 5 pytań. Wygenerowany raport znajdziesz w katalogu `raporty/` — otwórz go w edytorze.
+
+---
+
+## Logi API
+
+Po każdym uruchomieniu `cpX.py` powstaje plik `<nazwa_skryptu>.logs.txt` w głównym katalogu repozytorium (np. `cp1good.logs.txt`).
+
+Otwórz go w edytorze — zobaczysz dokładnie co wysłałeś do modelu i co odpowiedział. Każdy wpis zawiera:
+- datę i godzinę wywołania
+- wiadomości wysłane do modelu (`[system]`, `[user]`, `[tool]`)
+- odpowiedź modelu (tekst lub wywołanie narzędzia)
+
+To przydatne do zrozumienia co się dzieje "pod spodem" — szczególnie przy zadaniach bonusowych.
+
+---
+
+## Dostępne modele LLM
+
+Modele dostępne na warsztacie są zdefiniowane w `lib/common.py` (klasa `MODELS`):
+
+| Nazwa w kodzie | Model OpenAI |
+|----------------|--------------|
+| `MODELS.gpt_4o_mini` | gpt-4o-mini |
+| `MODELS.gpt_4_1_mini` | gpt-4.1-mini |
+| `MODELS.gpt_4_1_nano` | gpt-4.1-nano |
+
+Żeby zmienić model w dowolnym checkpoincie, zamień `MODELS.gpt_4o_mini` na inny w wywołaniu `client.chat.completions.create(...)`.
+
+Pełna lista modeli OpenAI: https://platform.openai.com/docs/models
+
+---
 
 ## Potrzebujesz pomocy?
 
