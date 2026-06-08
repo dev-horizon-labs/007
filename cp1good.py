@@ -117,13 +117,17 @@ EXECUTE_SQL_TOOL = {
 
 def ask(question: str) -> str:
     total_tokens = 0  # sumujemy prompt_tokens ze wszystkich wywołań API
+    # ── PROMPT SYSTEMOWY — tu definiujesz rolę i kontekst dla modelu ────
+    system_content = f"""Jesteś asystentem wypożyczalni samochodów. Odpowiadaj po polsku.
+Schemat bazy danych:
+
+{SCHEMA_DDL}"""
+    # ────────────────────────────────────────────────────────────────────
+
     messages = [
         {
             "role": "system",
-            "content": f"""Jesteś asystentem wypożyczalni samochodów. Odpowiadaj po polsku.
-Schemat bazy danych:
-
-{SCHEMA_DDL}""",
+            "content": system_content,
         },
         {"role": "user", "content": question},
     ]
