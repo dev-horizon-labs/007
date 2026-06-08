@@ -96,6 +96,13 @@ class _LoggingClient:
         return getattr(self._real, name)
 
 
+# ── Co to jest client? ───────────────────────────────────────────────
+# client to obiekt do komunikacji z OpenAI API.
+# Używasz go tak: client.chat.completions.create(...)
+# Skąd pochodzi klucz API? Z pliku .env — ładowany automatycznie przez load_dotenv().
+# Dodatkowo: każde wywołanie .create() lub .parse() jest zapisywane
+# do pliku cpX.logs.txt obok pliku który uruchomiłeś.
+# ────────────────────────────────────────────────────────────────────
 client = _LoggingClient(_raw_client)
 
 
