@@ -47,8 +47,9 @@ class TinyReport(BaseModel):
 
 def mini_example(question: str, raw_data: list[dict]) -> TinyReport:
     """MINI PRZYKŁAD: Structured Output z jednym polem."""
-    # .parse() to wrapper SDK — automatycznie konwertuje response na obiekt Pydantic (.parsed).
-    # Bez .parse(): client.chat.completions.create() + json.loads() + Model(**data)
+    # .parse() to gotowy wrapper — automatycznie konwertuje response na obiekt Pydantic (.parsed).
+    # Jeśli chcesz sam to napisać, to ścieżka bez .parse(): 
+    # client.chat.completions.create() + json.loads() + Model(**data)
     # Docs: https://developers.openai.com/api/docs/guides/structured-outputs
 
     # ── PROMPT SYSTEMOWY — tu definiujesz rolę i kontekst dla modelu ────
@@ -75,11 +76,15 @@ def mini_example(question: str, raw_data: list[dict]) -> TinyReport:
 # ════════════════════════════════════════════════════════════════════════
 # SEKCJA 2: TWOJE ZADANIE
 #
-# Odkomentuj oznaczone bloki i uruchom. Wzoruj się na mini_example().
+# Odkomentuj oznaczone bloki i uruchom w terminalu komendę:
+#
+# python cp2good.py
+#
 # ════════════════════════════════════════════════════════════════════════
 
 
 ## ── ODKOMENTUJ PONIŻEJ ──
+## ReportRow - model Pydantic przedstawiający jeden wiersz raportu
 
 # class ReportRow(BaseModel):
 #     label: str = Field(..., description="Nazwa wiersza, np. 'SUV', 'Jan Kowalski'")
@@ -90,6 +95,7 @@ def mini_example(question: str, raw_data: list[dict]) -> TinyReport:
 
 
 ## ── ODKOMENTUJ PONIŻEJ ──
+## RentalReport - model Pydantic przedstawiający pełny raport
 
 # class RentalReport(BaseModel):
 #     title: str = Field(..., description="Tytuł raportu po polsku")
@@ -102,6 +108,8 @@ def mini_example(question: str, raw_data: list[dict]) -> TinyReport:
 
 
 ## ── ODKOMENTUJ PONIŻEJ ──
+## full_report() - funkcja, która używa response_format=RentalReport i zwraca RentalReport
+
 
 # def full_report(question: str, raw_data: list[dict], sql_used: str) -> RentalReport:
 #     result = client.chat.completions.parse(
@@ -151,7 +159,11 @@ if __name__ == "__main__":
 # ════════════════════════════════════════════════════════════════════════
 #
 # 1. Dodaj pole trend: str do ReportRow (np. '↑', '↓', '→')
-#    — jak model je wypełni bez dodatkowych danych?
+#    Jak model je wypełni bez dodatkowych informacji?
 #
 # 2. Zmień opisy w Field(description=...) na angielskie — czy model
 #    dalej odpowiada po polsku?
+#
+# 3. Dodaj do ReportRow pole action_hint: str.
+#    Niech model dla każdego wiersza zaproponuje krótką decyzję biznesową,
+#    np. "promować", "dokupić", "sprawdzić ceny", ale tylko na podstawie danych wejściowych.

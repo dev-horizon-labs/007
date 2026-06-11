@@ -2,10 +2,11 @@
 CP2 — ANTYWZORZEC: Luźna instrukcja JSON
 ==========================================
 
-Model dostaje luźną instrukcję "sformatuj jako JSON" — bez schematu.
-Skrypt wywołuje model 3 razy i porównuje klucze w odpowiedziach.
+Model dostaje luźną instrukcję "sformatuj jako JSON" — bez podanej oczekiwanej struktury.
+Skrypt wywołuje model 5 razy i porównuje odpowiedzi.
 
-Uruchom: python cp2bad1.py
+Uruchom w terminalu komendę:
+python cp2bad1.py
 """
 
 import json
@@ -48,7 +49,7 @@ def bad_report_v1(question: str, raw_data: list[dict]) -> dict:
 
 
 def extract_keys(obj, prefix="") -> set[str]:
-    """Rekurencyjnie zbiera ścieżki kluczy z JSON-a."""
+    """Rekurencyjnie zbiera ścieżki kluczy z JSON-a. Używane do porównania struktur JSON w odpowiedziach."""
     keys = set()
     if isinstance(obj, dict):
         for k, v in obj.items():

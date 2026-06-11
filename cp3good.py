@@ -5,7 +5,10 @@ CP3: Pipeline
 Łączysz Function Calling (CP1) ze Structured Output (CP2).
 Model odpytuje bazę → formatuje wynik → zapisuje raport do pliku markdown.
 
-Uruchom: python cp3good.py
+Uruchom w terminalu komendę:
+
+python cp3good.py
+
 """
 
 import json
@@ -94,6 +97,8 @@ if __name__ == "__main__":
         "Ilu klientów nie ma jeszcze żadnego wypożyczenia?",
     ]
 
+    # tworzenie raportu w formacie markdown
+
     all_sections = []
     for q in questions:
         print(f"\nQ: {q}")
@@ -129,8 +134,13 @@ if __name__ == "__main__":
 # BONUS
 # ════════════════════════════════════════════════════════════════════════
 #
-# 1. Dodaj własne pytanie do listy — wymyśl coś, co wymaga
-#    JOIN-a między kilkoma tabelami.
+# 1. Dodaj własne pytanie do listy w `questions` — może coś bardziej analitycznego? Na przykład:
+#    "Które samochody mają duży przebieg, ale nadal są dostępne?"
+#    "Który oddział ma największy problem z dostępnością samochodów?"
+#    
+#    Zajrzyj do wygenerowanego raportu. Czy odpowiedzi faktycznie
+#    wynikają z danych, czy model dopowiada interpretację?
 #
 # 2. Dodaj trzecie narzędzie do pipeline — np. wcześniej wspomniane get_branch_info(city)
 #    zwracające dane oddziału. Czy model sam zdecyduje kiedy go użyć?
+#

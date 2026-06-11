@@ -24,6 +24,7 @@ Baza: SQLite
 Oddzialy(id, nazwa, miasto, adres, telefon, aktywny)
 KategorieSamochodow(id, nazwa, opis, stawka_dzienna)
 Pracownicy(id, imie, nazwisko, email, stanowisko, id_oddzialu, data_zatrudnienia, id_przelozonego, aktywny)
+  FK: id_oddzialu -> Oddzialy, id_przelozonego -> Pracownicy (self-referencing)
 Klienci(id, imie, nazwisko, email, telefon, data_urodzenia, nr_prawa_jazdy, data_rejestracji, usuniety_at)
 Samochody(id, marka, model, rok_produkcji, nr_rejestracyjny, kolor, id_kategorii, id_oddzialu, status, przebieg)
   status IN ('dostepny', 'wypozyczony', 'serwis')
@@ -34,4 +35,5 @@ Wypozyczenia(id, id_klienta, id_samochodu, id_pracownika, data_wypozyczenia, dat
 Platnosci(id, id_wypozyczenia, kwota, data_platnosci, metoda, status)
   metoda IN ('karta', 'gotowka', 'przelew')
   status IN ('oczekujaca', 'zrealizowana', 'anulowana')
+  FK: id_wypozyczenia -> Wypozyczenia
 """

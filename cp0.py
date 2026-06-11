@@ -3,9 +3,11 @@ CP0: Ping Pong
 ==============
 
 Sprawdzamy, czy połączenie z modelem działa.
-Jeden prosty request — zero narzędzi, zero bazy danych.
 
-Uruchom: python cp0.py
+Uruchom w terminalu komendę: 
+
+python cp0.py
+
 """
 
 from lib.common import MODELS

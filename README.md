@@ -14,12 +14,28 @@ Model językowy (LLM) to zewnętrzna usługa — tak jak strona internetowa, do 
 
 W tym warsztacie używamy **OpenAI API**. Klucz jest już skonfigurowany — kod ładuje go automatycznie. Nie musisz nic robić.
 
+W kodzie zobaczysz wywołanie modelu, na przykład:
+```python
+response = client.chat.completions.create(
+    model=MODELS.gpt_4o_mini,
+    messages=messages,
+    tools=[GET_CAR_COUNT_TOOL],
+)
+```
+Gdzie:
+- `client` to klient OpenAI, który łączy się z API OpenAI
+- `MODELS.gpt_4o_mini` to model językowy
+- `messages` to wiadomości wysłane do modelu
+- `tools` to lista narzędzi, które model może wywołać
+- `GET_CAR_COUNT_TOOL` to przykładowe używane narzędzie, które zwraca liczbę samochodów
+- `response` to odpowiedź modelu
+
 ### Przeglądanie bazy danych
 
 W panelu po lewej stronie edytora masz zainstalowane rozszerzenie **SQLite Viewer**.
 Kliknij na plik `data/wypozyczalnia.db` — zobaczysz tabele i dane w czytelnej formie.
 
-<!-- TODO: screenshot SQLite Viewer z otwartą bazą wypozyczalnia.db -->
+![Schemat bazy wypożyczalni samochodów](./data/wypozyczalnia_schema.png)
 
 ---
 
@@ -30,14 +46,12 @@ Baza to wypożyczalnia samochodów z oddziałami w Płocku, Warszawie, Łodzi i 
 | Tabela | Zawartość |
 |--------|-----------|
 | `Oddzialy` | 6 oddziałów |
-| `KategorieSamochodow` | 6 kategorii (Ekonomiczny, SUV, Elektryczny…) |
+| `KategorieSamochodow` | 6 kategorii (Ekonomiczny, Kompaktowy, SUV, Premium, Dostawczy, Elektryczny) |
 | `Samochody` | 80 samochodów |
 | `Klienci` | 120 klientów |
-| `Pracownicy` | ~30 pracowników |
+| `Pracownicy` | 30 pracowników |
 | `Wypozyczenia` | 300 wypożyczeń |
-| `Platnosci` | Płatności powiązane z wypożyczeniami |
-
-<!-- TODO: screenshot schematu relacji między tabelami -->
+| `Platnosci` | Płatności powiązane z wypożyczeniami - 195 rekordów |
 
 ---
 
@@ -58,19 +72,26 @@ Model odpytuje bazę danych narzędziem zamiast zgadywać z danych w prompcie.
 
 ### Krok 1 — obejrzyj antywzorzec
 
+[Otwórz `cp1bad.py`](./cp1bad.py)
+
+Sprawdź, jak działa antywzorzec Prompt Stuffing, czyli wrzucanie wszystkich danych z bazy do promptu. Uruchom w terminalu komendę:
 ```bash
 python cp1bad.py
 ```
 
 Zobaczysz wszystkie dane z bazy wrzucone do promptu i liczbę użytych tokenów. To nieefektywne — co jeśli baza ma 100× więcej danych?
 
-### Krok 2 — przeczytaj mini przykład
+### Krok 2 — poprawne podejście - Function Calling. Przeczytaj mini przykład.
 
-Otwórz `cp1good.py` i przeczytaj **Sekcję 1** (MINI PRZYKŁAD). To najprostsze możliwe Function Calling: narzędzie bez parametrów, które zwraca liczbę samochodów. Przeczytaj kod — zrozum jak działa pętla pytanie → narzędzie → wynik → odpowiedź.
+[Otwórz `cp1good.py`](./cp1good.py) i przeczytaj **Sekcję 1** (MINI PRZYKŁAD). To najprostsze możliwe Function Calling: narzędzie bez parametrów, które zwraca liczbę samochodów. Przeczytaj kod. Uruchom w terminalu komendę:
+```bash
+python cp1good.py
+```
+Zrozum jak działa podejście: pytanie → narzędzie → wynik → odpowiedź.
 
-### Krok 3 — twoje zadanie
+### Krok 3 — Twoje zadanie
 
-W `cp1good.py` odkomentuj **dwa oznaczone bloki** w Sekcji 2:
+W [`cp1good.py`](./cp1good.py) odkomentuj **dwa oznaczone bloki** w Sekcji 2:
 1. Definicję parametru `sql_query` w `EXECUTE_SQL_TOOL`
 2. Logikę walidacji SQL w funkcji `ask()`
 
@@ -90,46 +111,62 @@ Model zwraca ustrukturyzowany raport jako obiekt Pythona zamiast tekstu do ręcz
 
 ### Krok 1 — obejrzyj antywzorce
 
+[Otwórz `cp2bad1.py`](./cp2bad1.py)
+
+Sprawdź, jak działa antywzorzec **Luźna instrukcja JSON**, czyli model dostaje luźną instrukcję "sformatuj jako JSON" — bez podanej oczekiwanej struktury. Uruchom w terminalu komendę:
+
 ```bash
 python cp2bad1.py
 ```
+
+Zobaczysz 5 odpowiedzi z modelu i porównanie struktur JSON w odpowiedziach.
+
+[Otwórz `cp2bad2.py`](./cp2bad2.py)
+
+Sprawdź, jak działa antywzorzec **Sprzeczne instrukcje**, czyli model ma wyjaśnić wnioski i jednocześnie zwrócić czysty JSON. Uruchom w terminalu komendę:
 
 ```bash
 python cp2bad2.py
 ```
 
-Uruchom każdy kilka razy. Zauważ że `json.loads()` czasem się nie powiedzie albo struktura odpowiedzi jest za każdym razem inna.
+Zobaczysz 5 odpowiedzi z modelu i porównanie struktur JSON w odpowiedziach.
 
-### Krok 2 — przeczytaj mini przykład
+### Krok 2 — Poprawne podejście - Structured Output. Przeczytaj mini przykład.
 
-Otwórz `cp2good.py` i przeczytaj **Sekcję 1** (MINI PRZYKŁAD). Jeden model Pydantic z jednym polem `title`. Zwróć uwagę na `client.chat.completions.parse()` zamiast `.create()` — to wrapper SDK, który automatycznie konwertuje odpowiedź na obiekt Pydantic.
+[Otwórz `cp2good.py`](./cp2good.py) i przeczytaj **Sekcję 1** (MINI PRZYKŁAD). Jeden model Pydantic `TinyReport` z jednym polem `title`. Zwróć uwagę na `client.chat.completions.parse()` zamiast `.create()` — to wrapper, który automatycznie konwertuje odpowiedź na obiekt Pydantic. Przeczytaj kod. Uruchom w terminalu komendę:
+```bash
+python cp2good.py
+```
+Zobaczysz raport z tytułem, wartością główną, tabelą wierszy i podsumowaniem.
 
-### Krok 3 — twoje zadanie
+### Krok 3 — Twoje zadanie
 
-W `cp2good.py` odkomentuj **trzy oznaczone bloki** w Sekcji 2:
+W [`cp2good.py`](./cp2good.py) odkomentuj **trzy oznaczone bloki** w Sekcji 2:
 1. Klasę `ReportRow`
 2. Klasę `RentalReport`
 3. Funkcję `full_report()`
 
-Następnie odkomentuj blok uruchamiający Sekcję 2 na dole pliku i uruchom:
+Następnie odkomentuj blok uruchamiający Sekcję 2 na dole pliku i uruchom w terminalu komendę:
 
 ```bash
 python cp2good.py
 ```
 
-Powinieneś zobaczyć pełny raport z tytułem, wartością główną, tabelą wierszy i podsumowaniem.
+Powinieneś zobaczyć raport z tytułem, wartością główną, tabelą wierszy i podsumowaniem.
 
 ---
 
 ## CP3: Pipeline (`cp3good.py`)
 
-Łączysz CP1 i CP2 w jeden pipeline — model odpytuje bazę, formatuje raport, zapisuje do pliku markdown.
+Łączysz checkpointy CP1 i CP2 w jeden pipeline — model odpytuje bazę, formatuje raport, zapisuje do pliku markdown.
 
-### Krok 1 — sprawdź importy
+### Krok 1 — Sprawdź importy
 
-`cp3good.py` importuje `ask` z CP1 i `full_report` z CP2. Upewnij się że **oba** checkpointy mają odkomentowane sekcje zadań (CP1 Sekcja 2, CP2 Sekcja 2).
+[Otwórz `cp3good.py`](./cp3good.py) i przeczytaj **Sekcję 1**. Skrypt importuje `ask` z CP1 i `full_report` z CP2. Upewnij się że **oba** checkpointy mają odkomentowane sekcje zadań (CP1 Sekcja 2, CP2 Sekcja 2). 
 
-### Krok 2 — uruchom pipeline
+### Krok 2 — Uruchom pipeline
+
+Uruchom w terminalu komendę:
 
 ```bash
 python cp3good.py
@@ -169,8 +206,3 @@ Modele dostępne na warsztacie są zdefiniowane w `lib/common.py` (klasa `MODELS
 Żeby zmienić model w dowolnym checkpoincie, zamień `MODELS.gpt_4o_mini` na inny w wywołaniu `client.chat.completions.create(...)`.
 
 ---
-
-## Potrzebujesz pomocy?
-
-- Podnieś rękę — prowadzący chętnie pomoże
-- Ważniejsze jest zrozumienie niż ukończenie

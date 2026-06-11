@@ -5,7 +5,10 @@ CP1 — ANTYWZORZEC: Prompt Stuffing
 Kod wrzuca WSZYSTKIE dane z bazy do promptu.
 Uruchom i sprawdź odpowiedzi — czy są poprawne?
 
-Uruchom: python cp1bad.py
+Uruchom w terminalu komendę: 
+
+python cp1bad.py
+
 """
 
 import sqlite3

@@ -4,7 +4,7 @@ CP1: Function Calling
 
 Ten plik ma DWIE sekcje:
 
-  1. MINI PRZYKŁAD — najprostsze Function Calling (narzędzie bez parametrów).
+  1. MINI PRZYKŁAD — najprostsze Function Calling.
   2. TWOJE ZADANIE — odkomentuj execute_sql z parametrem sql_query.
 
 Uruchom: python cp1good.py
@@ -20,8 +20,14 @@ from lib.db import DB_PATH, client, execute_query, validate_sql
 # ════════════════════════════════════════════════════════════════════════
 # SEKCJA 1: MINI PRZYKŁAD — Function Calling
 #
-# Najprostsze możliwe narzędzie: zero parametrów, jeden wynik.
-# Przeczytaj kod, uruchom, zrozum jak działa.
+# Najprostsze możliwe narzędzie.
+# Przeczytaj kod.
+# Uruchom w terminalu komendę: 
+# 
+# python cp1good.py
+# 
+# Zrozum jak działa.
+# 
 # ════════════════════════════════════════════════════════════════════════
 
 
@@ -90,7 +96,10 @@ def mini_example(question: str) -> str:
 # ════════════════════════════════════════════════════════════════════════
 # SEKCJA 2: TWOJE ZADANIE
 #
-# Odkomentuj oznaczone bloki i uruchom. Wzoruj się na mini_example().
+# Odkomentuj oznaczone bloki i uruchom w terminalu komendę:
+#
+# python cp1good.py
+#
 # ════════════════════════════════════════════════════════════════════════
 
 
@@ -190,7 +199,7 @@ if __name__ == "__main__":
     #     "Ile samochodów jest dostępnych w Płocku?",
     #     "Który klient wypożyczył najwięcej samochodów?",
     #     "Jaka jest średnia stawka dzienna w kategorii SUV?",
-    #     "Porównaj liczbę dostępnych aut w Płocku i Warszawie",
+    #     "Porównaj liczbę dostępnych aut w Płocku i Gdańsku",
     # ]
     # for q in questions:
     #     print(f"\nQ: {q}")
@@ -210,13 +219,14 @@ if __name__ == "__main__":
 #
 # 2. Dodaj nowe narzędzie get_branch_info(miasto: str) zwracające dane
 #    o oddziale w danym mieście — wzoruj się na GET_CAR_COUNT_TOOL.
+#    Następnie dodaj to narzędzie do promptu systemowego.
 #
 # 3. Zamiast wklejać schemat bazy ręcznie, napisz narzędzie
 #    get_schema() które wyciąga go z bazy dynamicznie:
 #
 #      SELECT sql
 #      FROM sqlite_schema
-#      WHERE type IN ('table')
+#      WHERE type = 'table'
 #        AND name NOT LIKE 'sqlite_%'
 #      ORDER BY type, name;
 #
