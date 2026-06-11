@@ -214,6 +214,10 @@ if __name__ == "__main__":
 # 3. Zamiast wklejać schemat bazy ręcznie, napisz narzędzie
 #    get_schema() które wyciąga go z bazy dynamicznie:
 #
-#      SELECT name, sql FROM sqlite_master WHERE type='table'
+#      SELECT sql
+#      FROM sqlite_schema
+#      WHERE type IN ('table')
+#        AND name NOT LIKE 'sqlite_%'
+#      ORDER BY type, name;
 #
 #    Podaj je modelowi zamiast SCHEMA_DDL w prompcie systemowym.
