@@ -209,12 +209,26 @@ Modele dostępne na warsztacie są zdefiniowane w `lib/common.py` (klasa `MODELS
 
 ## Uruchomienie lokalne
 
-Warsztat jest zaprojektowany pod **GitHub Codespaces** — to główne i zalecane środowisko. Jeśli chcesz uruchomić repozytorium lokalnie, potrzebujesz Pythona 3.12, zależności z `requirements.txt` oraz pliku `.env` w głównym katalogu repozytorium.
+Warsztat jest zaprojektowany pod **GitHub Codespaces** — to główne i zalecane środowisko. Jeśli chcesz uruchomić repozytorium lokalnie, potrzebujesz [Pythona](https://www.python.org/downloads/), zależności z `requirements.txt` oraz pliku `.env` w głównym katalogu repozytorium.
 
+Uruchom kolejno w terminalu:
+
+**1. Utwórz wirtualne środowisko** (dobra praktyka — izoluje zależności projektu od reszty systemu):
 ```bash
 python -m venv .venv
-source .venv/bin/activate        # Linux/macOS
-# .venv\Scripts\Activate.ps1   # Windows (PowerShell)
+```
+
+**2. Aktywuj środowisko:**
+```bash
+source .venv/bin/activate
+```
+Na Windows (PowerShell):
+```bash
+.venv\Scripts\Activate.ps1
+```
+
+**3. Zainstaluj zależności:**
+```bash
 pip install -r requirements.txt
 ```
 
