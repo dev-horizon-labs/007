@@ -234,14 +234,25 @@ pip install -r requirements.txt
 
 ### OpenAI API
 
-Utwórz plik `.env`:
+W głównym katalogu repozytorium utwórz plik o nazwie `.env` — w edytorze kodu lub w terminalu:
+
+Linux/macOS:
+```bash
+touch .env
+```
+Windows (PowerShell):
+```bash
+ni .env
+```
+
+Wklej do pliku poniższą zawartość, zastępując `sk-proj-xxx` swoim kluczem OpenAI API:
 
 ```
 OPENAI_BASE_URL=https://api.openai.com/v1
 OPENAI_API_KEY=sk-proj-xxx
 ```
 
-Klucz API znajdziesz lub wygenerujesz na stronie: [Gdzie znaleźć klucz OpenAI API?](https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key)
+Klucz OpenAI API znajdziesz lub wygenerujesz na stronie: [Gdzie znaleźć klucz OpenAI API?](https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key)
 
 ### Lokalny serwer Ollama
 
