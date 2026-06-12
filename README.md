@@ -206,3 +206,46 @@ Modele dostępne na warsztacie są zdefiniowane w `lib/common.py` (klasa `MODELS
 Żeby zmienić model w dowolnym checkpoincie, zamień `MODELS.gpt_4o_mini` na inny w wywołaniu `client.chat.completions.create(...)`.
 
 ---
+
+## Uruchomienie lokalne
+
+Warsztat jest zaprojektowany pod **GitHub Codespaces** — to główne i zalecane środowisko. Jeśli chcesz uruchomić repozytorium lokalnie, potrzebujesz Pythona 3.12, zależności z `requirements.txt` oraz pliku `.env` w głównym katalogu repozytorium.
+
+```bash
+python -m venv .venv
+source .venv/bin/activate        # Linux/macOS
+# .venv\Scripts\Activate.ps1   # Windows (PowerShell)
+pip install -r requirements.txt
+```
+
+### OpenAI API
+
+Utwórz plik `.env`:
+
+```
+OPENAI_BASE_URL=https://api.openai.com/v1
+OPENAI_API_KEY=sk-proj-xxx
+```
+
+Klucz API znajdziesz lub wygenerujesz na stronie: [Gdzie znaleźć klucz OpenAI API?](https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key)
+
+### Lokalny serwer Ollama
+
+Jeśli masz zainstalowany [Ollama](https://ollama.com), możesz użyć go zamiast OpenAI API. Ollama udostępnia endpoint kompatybilny z OpenAI pod adresem `http://localhost:11434/v1`:
+
+```
+OPENAI_BASE_URL=http://localhost:11434/v1
+OPENAI_API_KEY=ollama
+```
+
+> `OPENAI_API_KEY` jest wymagane przez SDK, ale Ollama je ignoruje — możesz wpisać dowolny niepusty ciąg znaków.
+
+Przed uruchomieniem pobierz model lokalnie, np.:
+
+```bash
+ollama pull llama3.2
+```
+
+Pamiętaj, że nazwy modeli w Ollama różnią się od nazw OpenAI — zamiast `MODELS.gpt_4o_mini` użyj nazwy modelu zgodnej z tym, co pobrałeś, np. `"llama3.2"` lub `"qwen2.5:7b"`. W plikach checkpointów zmień odpowiednio argument `model=` w wywołaniu `client.chat.completions.create(...)`.
+
+---
